@@ -1,0 +1,18 @@
+{
+  "name": "miniprogram-bpm-mobile",
+  "version": "1.0.0",
+  "description": "移动审批中心",
+  "scripts": {
+    "compile": "./node_modules/typescript/bin/tsc",
+    "tsc": "node ./node_modules/typescript/lib/tsc.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "miniprogram-api-typings": "^2.8.3-1",
+    "typescript": "^3.3.3333"
+  }
+}

@@ -1,0 +1,37 @@
+<!--index.wxml-->
+<view class="container">
+  <view class="userinfo">
+    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+    <block wx:else>
+      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+    </block>
+  </view>
+  <mp-dialog title="登录" show="{{showUserDialog}}" bindbuttontap="onUserConfirm" buttons="{{confirmButton}}">
+    <mp-toptips msg="{{error}}" type="error" show="{{error}}"></mp-toptips>
+    <mp-form id="form" rules="{{rules}}" models="{{formData}}">
+      <mp-cells>
+        <mp-cell prop="user" title="帐号">
+          <input bindinput="formInputChange" data-field="user" class="weui-input" placeholder="" />
+        </mp-cell>
+        <mp-cell prop="pwd" title="密码">
+          <input bindinput="formInputChange" data-field="pwd" class="weui-input" placeholder="" />
+        </mp-cell>
+      </mp-cells>
+    </mp-form>
+  </mp-dialog>
+  <view class="page-section">
+    <view class="center" style="flex-direction:column;justify-content: center;">
+      <text>欢迎使用审批中心</text>
+      <p></p>
+      <p></p>
+    </view>
+  </view>
+  <view class="page-section">
+    <view style="flex-direction:column;justify-content: center;">
+      <button bindtap="onShowUser">通过帐号密码登录</button>
+      <text class="center">或</text>
+      <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">通过手机号登录</button>
+    </view>
+  </view>
+</view>
