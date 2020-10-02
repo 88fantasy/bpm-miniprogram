@@ -2,8 +2,8 @@
   "compilerOptions": {
     "strictNullChecks": true,
     "noImplicitAny": true,
-    "module": "CommonJS",
-    "target": "ES5",
+    "module": "esnext",
+    "target": "esnext",
     "allowJs": false,
     "experimentalDecorators": true,
     "noImplicitThis": true,
@@ -18,10 +18,10 @@
     "removeComments": true,
     "pretty": true,
     "strictPropertyInitialization": true,
-    "lib": ["es5"],
+    "lib": ["esnext"],
     "typeRoots": [
       "./typings"
-    ]
+    ],
   },
   "include": [
     "./**/*.ts"

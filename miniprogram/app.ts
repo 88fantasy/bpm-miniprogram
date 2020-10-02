@@ -1,6 +1,21 @@
 // app.ts
-App<IAppOption>({
-  globalData: {},
+
+App<BpmOption>({
+  globalData: {
+    baseUrl: "https://app.gzmpc.com/NewMobilePlatform/api/",
+  },
+
+  setLoginInfo(accessToken: string, accountName: string, opcode: string) {
+    this.globalData.token = accessToken;
+    const accountInfo = {
+      accountName,
+      opcode,
+    }
+    this.globalData.token = accessToken;
+    this.globalData.accountInfo = accountInfo;
+  },
+  
+
   onLaunch() {
     // 展示本地存储能力
     const logs = wx.getStorageSync('logs') || []

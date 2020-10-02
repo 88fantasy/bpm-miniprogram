@@ -1,6 +1,8 @@
 // index.ts
+import { wxRequest } from '../../utils/request';
+
 Page({
-  app: getApp<IAppOption>(),
+  app: getApp<BpmOption>(),
   data: {
     sessionKey: "",
     userInfo: {},
@@ -17,7 +19,8 @@ Page({
     }],
     confirmButton: [{ text: '确定' }],
     formData: {
-
+      user: "",
+      pwd: ""
     }
   },
   // 事件处理函数
@@ -34,6 +37,8 @@ Page({
   },
 
   onUserConfirm() {
+    const { app }  = this;
+    const that = this;
     this.selectComponent('#form').validate((valid: any, errors: any) => {
       if (!valid) {
         const firstError = Object.keys(errors)
@@ -43,11 +48,43 @@ Page({
           })
         }
       } else {
-        console.log('form data :', this.data.formData);
-        this.onUserCancel();
-        wx.switchTab({url: "/pages/dashboard/dashboard"});
+        wx.showLoading({
+          title: '加载中',
+        });
+        wxRequest({
+          header : {
+            'content-type' : 'application/x-www-form-urlencoded',
+          },
+          url: "login",
+          method: 'POST',
+          data: {
+            username: this.data.formData.user,
+            password: this.data.formData.pwd
+          }
+        }).then((res) => {
+          wx.hideLoading();
+          if(res.statusCode == 200) {
+            const data:any  = res.data;
+            app.setLoginInfo(data.data.token, "", this.data.formData.user);
+            this.onUserCancel();
+            wx.switchTab({url: "/pages/dashboard/dashboard"});
+          }
+          else {
+            that.setError(res.errMsg);
+          }
+        })
+        .catch((res: WechatMiniprogram.GeneralCallbackResult) => {
+          wx.hideLoading();
+          that.setError(res.errMsg);
+        });
       }
     })
+  },
+
+  setError(errMsg: string) {
+    this.setData({
+      error: errMsg
+    });
   },
 
   onUserCancel() {
@@ -73,7 +110,7 @@ Page({
     } else if (this.data.canIUse) {
       // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
       // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
+      app.userInfoReadyCallback = (res: any) => {
         this.setData({
           userInfo: res.userInfo,
           hasUserInfo: true,
@@ -93,7 +130,7 @@ Page({
     }
   },
   getUserInfo(e: any) {
-    const app = getApp<IAppOption>();
+    const app = getApp<BpmOption>();
     app.globalData.userInfo = e.detail.userInfo
     this.setData({
       userInfo: e.detail.userInfo,
