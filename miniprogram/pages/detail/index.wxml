@@ -1,0 +1,23 @@
+<!--pages/detail/index.wxml-->
+<view wx:if="{{detail.content && detail.content.length > 0}}">
+  <van-divider contentPosition="center" customStyle="color: #1989fa; border-color: #1989fa; font-size: 18px;">
+    详情
+  </van-divider>
+</view>
+<van-cell wx:for="{{detail.content}}" title="{{item.dataname}}" value="{{item.datavalue}}"  />
+<view wx:if="{{detail.record && detail.record.length > 0}}">
+  <van-divider contentPosition="center" customStyle="color: #1989fa; border-color: #1989fa; font-size: 18px;">
+    审批记录
+  </van-divider>
+  <van-cell wx:for="{{detail.record}}" title="{{item.operator}}" value="{{item.time}}" use-label-slot >
+    <view slot="label">
+      <view class="van-cell-text">{{item.comment}}</view>
+      <van-tag>{{item.operatorNode}}</van-tag>
+    </view>
+  </van-cell>
+</view>
+<view wx:if="{{detail.attachment && detail.attachment.length > 0}}">
+  <van-divider contentPosition="center" customStyle="color: #1989fa; border-color: #1989fa; font-size: 18px;">
+    附件
+  </van-divider>
+</view>

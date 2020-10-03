@@ -2,7 +2,8 @@
 
 App<BpmOption>({
   globalData: {
-    baseUrl: "https://app.gzmpc.com/NewMobilePlatform/api/",
+    baseUrl: "https://app.gzmpc.com/NewMobilePlatform/api",
+    token: "320e7274b3e7bf86c181f11d2b83903c",
   },
 
   setLoginInfo(accessToken: string, accountName: string, opcode: string) {

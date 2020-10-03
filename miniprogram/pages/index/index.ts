@@ -15,7 +15,7 @@ Page({
       rules: { required: true, message: '帐号必填' },
     }, {
       name: 'pwd',
-      rules: { required: true, message: 'mobile必填' },
+      rules: { required: true, message: '密码必填' },
     }],
     confirmButton: [{ text: '确定' }],
     formData: {
@@ -55,7 +55,7 @@ Page({
           header : {
             'content-type' : 'application/x-www-form-urlencoded',
           },
-          url: "login",
+          url: "/login",
           method: 'POST',
           data: {
             username: this.data.formData.user,

@@ -1,2 +1,19 @@
 <!--miniprogram/pages/list/list.wxml-->
-<text>miniprogram/pages/list/list.wxml</text>
+<view>
+  <van-cell-group border="{{ true }}">
+    <van-swipe-cell right-width="{{ 65 }}" left-width="{{ 65 }}" wx:for="{{assList}}">
+      <van-button type="danger" block slot="left" custom-style="height:100%;">中止</van-button>
+      <van-cell title="{{item.title}}" use-label-slot="{{true}}" size="large" clickable bind:click="onCellClick"
+        data-id="{{item.id}}" data-categoryid="{{item.categoryid}}">
+        <view slot="label">
+          <van-tag mark type="primary">{{item.systemname}}</van-tag>
+        </view>
+        <view slot="label">
+          <van-tag mark type="primary">{{item.categoryname}}</van-tag>
+          <van-tag mark>{{item.createdTime}}</van-tag>
+        </view>
+      </van-cell>
+      <van-button type="primary" block slot="right" custom-style="height:100%;">通过</van-button>
+    </van-swipe-cell>
+  </van-cell-group>
+</view>
