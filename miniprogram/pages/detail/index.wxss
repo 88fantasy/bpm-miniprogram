@@ -1,1 +1,7 @@
 /* pages/detail/index.wxss */
+
+.footer-bar {
+  /* position: fixed !important;
+  bottom: 0px; */
+  width: 100%;
+}

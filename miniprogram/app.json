@@ -1,5 +1,5 @@
 {
-  "entryPagePath": "pages/list/list",
+  "entryPagePath": "pages/index/index",
   "pages": [
     "pages/index/index",
     "pages/logs/logs",
@@ -17,7 +17,6 @@
   "tabBar": {
     "color": "#333",
     "selectedColor": "#17abe3",
-    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/dashboard/dashboard",
@@ -37,6 +36,12 @@
   "useExtendedLib": {
     "kbone": true,
     "weui": true
+  },
+  "plugins":{
+    "crypto":{
+        "version":"0.0.003",
+        "provider":"wxf25d506ff81e19fb"
+    }
   },
   "usingComponents": {
     "van-button": "/miniprogram_npm/@vant/weapp/button/index",

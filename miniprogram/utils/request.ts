@@ -7,14 +7,19 @@ export const wxRequest = (options: any) => {
       })
     }
     const realUrl = url.startsWith("http") ? url : getApp<BpmOption>().globalData.baseUrl + url;
+    wx.showLoading({
+      title: '加载中',
+    });
     wx.request({
       header: { 'Content-Type': 'application/json' },
       ...options,
       url: realUrl,
       success: function (res) {
+        wx.hideLoading();
         resolve(res);
       },
       fail: function (res) {
+        wx.hideLoading();
         reject(res);
       }
     })

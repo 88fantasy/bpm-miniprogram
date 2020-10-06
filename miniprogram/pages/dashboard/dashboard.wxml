@@ -14,5 +14,5 @@
         <mp-badge content="8" style="margin-left: 5px;" />
       </mp-cell>
     </view>
-    <button class="weui-btn" type="warn" >注销</button>
+    <van-button type="danger" block bind:click="onLogout">注销</van-button>  
 </view>

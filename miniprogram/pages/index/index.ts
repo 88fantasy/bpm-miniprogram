@@ -1,6 +1,9 @@
 // index.ts
 import { wxRequest } from '../../utils/request';
 
+
+const WXBizDataCrypt = require('../../utils/RdWXBizDataCrypt');
+
 Page({
   app: getApp<BpmOption>(),
   data: {
@@ -37,7 +40,6 @@ Page({
   },
 
   onUserConfirm() {
-    const { app }  = this;
     const that = this;
     this.selectComponent('#form').validate((valid: any, errors: any) => {
       if (!valid) {
@@ -48,35 +50,8 @@ Page({
           })
         }
       } else {
-        wx.showLoading({
-          title: '加载中',
-        });
-        wxRequest({
-          header : {
-            'content-type' : 'application/x-www-form-urlencoded',
-          },
-          url: "/login",
-          method: 'POST',
-          data: {
-            username: this.data.formData.user,
-            password: this.data.formData.pwd
-          }
-        }).then((res) => {
-          wx.hideLoading();
-          if(res.statusCode == 200) {
-            const data:any  = res.data;
-            app.setLoginInfo(data.data.token, "", this.data.formData.user);
-            this.onUserCancel();
-            wx.switchTab({url: "/pages/dashboard/dashboard"});
-          }
-          else {
-            that.setError(res.errMsg);
-          }
-        })
-        .catch((res: WechatMiniprogram.GeneralCallbackResult) => {
-          wx.hideLoading();
-          that.setError(res.errMsg);
-        });
+        const {user, pwd } = this.data.formData;
+        that.login(user,pwd);
       }
     })
   },
@@ -100,8 +75,69 @@ Page({
     })
   },
 
+  login(user: string, pwd: string) {
+    const app = getApp<BpmOption>();
+    const that = this;
+    wxRequest({
+      header : {
+        'content-type' : 'application/x-www-form-urlencoded',
+      },
+      url: "/login",
+      method: 'POST',
+      data: {
+        username: user,
+        password: pwd
+      }
+    }).then((res) => {
+      if(res.statusCode == 200) {
+        const data:any  = res.data;
+        app.setToken(data.data.token);
+        that.onUserCancel();
+        wx.switchTab({url: "/pages/dashboard/dashboard"});
+
+        const sessionData = app.getSessionCache();
+        if(sessionData) {
+          wxRequest({
+            url: "https://wechat-api.gzmpc.com/v1/wechat/bindOpenId",
+            method: 'POST',
+            data: {
+              uaccount: user,
+              openid: sessionData.openid
+            }
+          }).then((res) => {
+            if(res.statusCode == 200) {
+              // const data:any  = res.data;
+            }
+          });
+        }
+      }
+      else {
+        that.setError(res.errMsg);
+      }
+    })
+    .catch((res: WechatMiniprogram.GeneralCallbackResult) => {
+      that.setError(res.errMsg);
+    });
+  },
+
   onLoad() {
     const { app } = this;
+    const that = this;
+
+    const sessionData = app.getSessionCache();
+    if(sessionData) {
+      wxRequest({
+        url: `https://wechat-api.gzmpc.com/v1/wechat/getUaccountByOpenId/${sessionData.openid}`,
+      }).then((res) => {
+        if(res.statusCode == 200) {
+          const data:any  = res.data;
+          if(data && data.errcode == 0) {
+            that.login(data.uaccount, "mima");
+          }
+        }
+      });
+    }
+
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -138,39 +174,25 @@ Page({
     })
   },
   getPhoneNumber(e: any) {
-    var that = this;
+    const { app } = this;
+    const that = this;
     wx.checkSession({
-      success: function () {
+      success: function (res) {
+        console.log(res);
         var ency = e.detail.encryptedData;
         var iv = e.detail.iv;
         var sessionk = that.data.sessionKey;
-        if (e.detail.errMsg == 'getPhoneNumber:fail user deny') {
+        console.log('session data: ', e, ency, iv, sessionk);
+        const errMsg:string = e.detail.errMsg;
+        if (errMsg && errMsg.startsWith('getPhoneNumber:fail')) {
           that.setData({
             modalstatus: true
           });
         } else { //同意授权
-          wx.request({
-            method: "GET",
-            url: '',
-            data: {
-              encrypdata: ency,
-              ivdata: iv,
-              sessionkey: sessionk
-            },
-            header: {
-              'content-type': 'application/json' // 默认值  
-            },
-            success: (res) => {
-              console.log("解密成功")
-              console.log(res)
-              // let phone = res.data.phoneNumber;
-              // console.log(phone);
-            },
-            fail: function (res) {
-              console.log("解密失败~~~~~~~~~~~~~");
-              console.log(res);
-            }
-          });
+          const pc = new WXBizDataCrypt(app.globalData.appId, sessionk);
+
+          var data = pc.decryptData(ency , iv)
+          console.log('解密后 data: ', data)
         }
       },
       fail: function () {

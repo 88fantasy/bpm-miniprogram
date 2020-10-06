@@ -4,20 +4,32 @@
     详情
   </van-divider>
 </view>
-<van-cell wx:for="{{detail.content}}" title="{{item.dataname}}" value="{{item.datavalue}}"  />
+<view wx:for="{{detail.content}}" wx:key="content">
+  <van-cell wx:if="{{item.validatatypecfg !== 'HTML'}}" title="{{item.dataname}}" value="{{item.datavalue}}" />
+  <rich-text wx:else nodes="{{item.datavalue}}" />
+</view>
+
 <view wx:if="{{detail.record && detail.record.length > 0}}">
   <van-divider contentPosition="center" customStyle="color: #1989fa; border-color: #1989fa; font-size: 18px;">
     审批记录
   </van-divider>
-  <van-cell wx:for="{{detail.record}}" title="{{item.operator}}" value="{{item.time}}" use-label-slot >
+  <!-- <van-cell wx:for="{{detail.record}}" title="{{item.operator}}" value="{{item.time}}" use-label-slot wx:key="record">
     <view slot="label">
       <view class="van-cell-text">{{item.comment}}</view>
       <van-tag>{{item.operatorNode}}</van-tag>
     </view>
-  </van-cell>
+  </van-cell> -->
+  <van-steps steps="{{ detail.steps }}" active="{{detail.active}}" direction="vertical" inactive-icon="underway" />
 </view>
 <view wx:if="{{detail.attachment && detail.attachment.length > 0}}">
   <van-divider contentPosition="center" customStyle="color: #1989fa; border-color: #1989fa; font-size: 18px;">
     附件
   </van-divider>
+</view>
+<view wx:if="{{operation && operation.length > 0}}">
+  <van-row>
+    <van-col wx:for="{{operation}}" wx:key="index" span="{{24 / operation.length}}">
+      <van-button block type="{{item.type}}">{{item.opername}}</van-button>
+    </van-col>
+  </van-row>
 </view>

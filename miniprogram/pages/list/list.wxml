@@ -1,10 +1,10 @@
 <!--miniprogram/pages/list/list.wxml-->
 <view>
   <van-cell-group border="{{ true }}">
-    <van-swipe-cell right-width="{{ 65 }}" left-width="{{ 65 }}" wx:for="{{assList}}">
+    <van-swipe-cell right-width="{{ 65 }}" left-width="{{ 65 }}" wx:for="{{assList}}" wx:key="index">
       <van-button type="danger" block slot="left" custom-style="height:100%;">中止</van-button>
       <van-cell title="{{item.title}}" use-label-slot="{{true}}" size="large" clickable bind:click="onCellClick"
-        data-id="{{item.id}}" data-categoryid="{{item.categoryid}}">
+        data-id="{{item.id}}" data-categoryid="{{item.categoryid}}" data-operation="{{item.operation}}">
         <view slot="label">
           <van-tag mark type="primary">{{item.systemname}}</van-tag>
         </view>

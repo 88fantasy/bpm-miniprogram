@@ -1,9 +1,9 @@
 {
   "usingComponents": {
-    "van-cell": "/miniprogram_npm/@vant/weapp/cell/index",
-    "van-cell-group": "/miniprogram_npm/@vant/weapp/cell-group/index",
-    "van-nav-bar": "/miniprogram_npm/@vant/weapp/nav-bar/index",
     "van-divider": "/miniprogram_npm/@vant/weapp/divider/index",
-    "van-tag": "/miniprogram_npm/@vant/weapp/tag/index"
+    "van-tag": "/miniprogram_npm/@vant/weapp/tag/index",
+    "van-row": "/miniprogram_npm/@vant/weapp/row/index",
+    "van-col": "/miniprogram_npm/@vant/weapp/col/index",
+    "van-steps": "/miniprogram_npm/@vant/weapp/steps/index"
   }
 }

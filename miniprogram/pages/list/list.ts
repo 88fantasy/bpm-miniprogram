@@ -22,9 +22,6 @@ Page({
     const { app } = this;
     const { token } = app.globalData;
     const that = this;
-    wx.showLoading({
-      title: '加载中',
-    });
     wxRequest({
       url: "/ass/asslist/" + token,
     }).then((res) => {
@@ -40,24 +37,24 @@ Page({
       }
     })
       .catch((res: WechatMiniprogram.GeneralCallbackResult) => {
-        wx.hideLoading();
         that.setError(res.errMsg);
       });
   },
 
   onCellClick(e: any) {
-    const { dataset: { id, categoryid } } = e.target;
+    const { dataset: { id, categoryid, operation } } = e.target;
     wx.navigateTo({
-        url: '/pages/detail/index',
-        success: function (res) {
-            // 通过eventChannel向被打开页面传送数据
-            res.eventChannel.emit('acceptDataFromOpenerPage', {
-                approvalid: id,
-                categoryid,
-            })
-        }
+      url: '/pages/detail/index',
+      success: function (res) {
+        // 通过eventChannel向被打开页面传送数据
+        res.eventChannel.emit('acceptDataFromOpenerPage', {
+          approvalid: id,
+          categoryid,
+          operation,
+        })
+      }
     });
-},
+  },
 
   onLoad() {
     // const { app } = this;
