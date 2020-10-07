@@ -22,8 +22,27 @@ Page({
     });
   },
 
+  onAttachmentClick(e: any) {
+    const { dataset: { url } } = e.target;
+    if(url) {
+      wx.downloadFile({
+        // 示例 url，并非真实存在
+        url,
+        success: function (res) {
+          const filePath = res.tempFilePath;
+          wx.openDocument({
+            filePath,
+            success: function (res) {
+              console.log('打开文档成功',res);
+            }
+          })
+        }
+      });
+    }
+  },
+
   refreshDetail: function () {
-    const { data: { approvalid, categoryid }, app: { globalData: { token } } } = this;
+    const { data: { approvalid, categoryid }, app: { globalData: { accountInfo : { token } } } } = this;
     const that = this;
     wxRequest({
       header: {

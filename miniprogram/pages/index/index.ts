@@ -91,25 +91,9 @@ Page({
     }).then((res) => {
       if(res.statusCode == 200) {
         const data:any  = res.data;
-        app.setToken(data.data.token);
+        app.setAccountInfo(user, data.data.token);
         that.onUserCancel();
         wx.switchTab({url: "/pages/dashboard/dashboard"});
-
-        const sessionData = app.getSessionCache();
-        if(sessionData) {
-          wxRequest({
-            url: "https://wechat-api.gzmpc.com/v1/wechat/bindOpenId",
-            method: 'POST',
-            data: {
-              uaccount: user,
-              openid: sessionData.openid
-            }
-          }).then((res) => {
-            if(res.statusCode == 200) {
-              // const data:any  = res.data;
-            }
-          });
-        }
       }
       else {
         that.setError(res.errMsg);

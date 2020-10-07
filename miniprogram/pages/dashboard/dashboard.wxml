@@ -6,7 +6,7 @@
         <mp-badge content="99+" style="position: absolute;top: -.4em;right: -.4em;" />
       </view>
       <view>{{name}}</view>
-      <view style="font-size: 13px;color: #888888;">{{opcode}}</view>
+      <view style="font-size: 13px;color: #888888;">{{uaccount}}</view>
     </mp-cell>
     <view wx:for="{{}}">
       <mp-cell link>

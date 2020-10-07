@@ -20,7 +20,7 @@ Page({
 
   onRefreshData() {
     const { app } = this;
-    const { token } = app.globalData;
+    const { token } = app.globalData.accountInfo;
     const that = this;
     wxRequest({
       url: "/ass/asslist/" + token,

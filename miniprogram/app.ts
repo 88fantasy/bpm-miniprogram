@@ -6,23 +6,38 @@ App<BpmOption>({
   globalData: {
     baseUrl: "https://app.gzmpc.com/NewMobilePlatform/api",
     appId: "wx87d027dd5e097c89",
-    appSecret: "fd356b9cea5ecf82d63abeaf4434ccdf",
-    // token: "320e7274b3e7bf86c181f11d2b83903c",
+    accountInfo : {
+      
+    }
   },
 
-  setToken(accessToken: string) {
-    this.globalData.token = accessToken;
+  setAccountInfo(uaccount: string, accessToken: string) {
+    this.globalData.accountInfo = {
+      token : accessToken,
+      uaccount,
+    };
 
     const sessionData = this.getSessionCache();
     if(sessionData) {
-      sessionData.openid;
+      wxRequest({
+        url: "https://wechat-api.gzmpc.com/v1/wechat/bindOpenId",
+        method: 'POST',
+        data: {
+          uaccount: uaccount,
+          openid: sessionData.openid
+        }
+      }).then((res) => {
+        if(res.statusCode == 200) {
+          // const data:any  = res.data;
+        }
+      });
     }
   },
 
   // 登录
   wxLogin() {
     const that = this;
-    const { appId, appSecret } = this.globalData;
+    const { appId } = this.globalData;
     wx.login({
       success: res => {
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
@@ -31,7 +46,6 @@ App<BpmOption>({
           method: 'POST',
           data: {
             appid: appId,
-            secret: appSecret,
             jsCode: res.code,
           }
         }).then((res) => {
