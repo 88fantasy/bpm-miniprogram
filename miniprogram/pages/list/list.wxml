@@ -2,9 +2,11 @@
 <view>
   <van-cell-group border="{{ true }}">
     <van-swipe-cell right-width="{{ 65 }}" left-width="{{ 65 }}" wx:for="{{assList}}" wx:key="index">
-      <van-button type="danger" block slot="left" custom-style="height:100%;">中止</van-button>
-      <van-cell title="{{item.title}}" use-label-slot="{{true}}" size="large" clickable bind:click="onCellClick"
-        data-id="{{item.id}}" data-categoryid="{{item.categoryid}}" data-operation="{{item.operation}}">
+      <van-button wx:if="{{item.stopable && !item.loading}}" type="danger" block slot="left" custom-style="height:100%;"
+        bind:click="onStopClick" data-id="{{item.id}}">中止</van-button>
+      <van-cell title="{{item.title}}" use-label-slot size="large" clickable="{{item.clickable}}"
+        bind:click="onCellClick" data-id="{{item.id}}" data-categoryid="{{item.categoryid}}"
+        data-operation="{{item.operation}}">
         <view slot="label">
           <van-tag mark type="primary">{{item.systemname}}</van-tag>
         </view>
@@ -12,8 +14,13 @@
           <van-tag mark type="primary">{{item.categoryname}}</van-tag>
           <van-tag mark>{{item.createdTime}}</van-tag>
         </view>
+        <view wx:if="{{item.error}}" slot="label">
+          <van-notice-bar left-icon="question-o" text="{{item.error}}" />
+        </view>
+        <van-loading wx:if="{{item.loading}}" slot="right-icon" color="#1989fa" vertical>操作中</van-loading>
       </van-cell>
-      <van-button type="primary" block slot="right" custom-style="height:100%;">通过</van-button>
+      <van-button wx:if="{{item.approvable && !item.loading}}" type="primary" block slot="right" custom-style="height:100%;"
+        bind:click="onApproveClick" data-id="{{item.id}}">通过</van-button>
     </van-swipe-cell>
   </van-cell-group>
 </view>

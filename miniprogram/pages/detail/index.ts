@@ -23,7 +23,12 @@ Page({
   },
 
   onAttachmentClick(e: any) {
-    const { dataset: { url } } = e.target;
+    const { dataset: { url } } : {
+      dataset: {
+        url: string;
+        type: string;
+      }
+    } = e.target;
     if(url) {
       wx.downloadFile({
         // 示例 url，并非真实存在
@@ -32,10 +37,14 @@ Page({
           const filePath = res.tempFilePath;
           wx.openDocument({
             filePath,
+            // fileType: type,
             success: function (res) {
               console.log('打开文档成功',res);
             }
           })
+        },
+        fail:function(res) {
+          console.log("download fail: ",res);
         }
       });
     }

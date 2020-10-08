@@ -1,5 +1,6 @@
 // list.ts
 import { wxRequest } from '../../utils/request';
+import { approve, stop } from '../../services/assapi';
 
 Page({
   app: getApp<BpmOption>(),
@@ -54,6 +55,122 @@ Page({
         })
       }
     });
+  },
+
+  onStopClick(e: any) {
+    const { dataset: { id } } = e.target;
+    const that = this;
+    const row: any = that.searchRow(id);
+
+    if (row) {
+      that.updateRow(id, {
+        loading: true,
+      });
+      stop({
+        approvalId: row.id,
+        categoryid: row.categoryid,
+        comment: '快速中止 (来自:微信小程序)',
+      }).then((res) => {
+        const data: any = res.data;
+        if(res.statusCode === 200) {
+          if(data.status == 200) {
+            that.removeRow(id);
+          }
+          else {
+            that.updateRow(id, {
+              error: String(data.errorMessage),
+              loading: false,
+            });
+          }
+        }
+        else {
+          that.updateRow(id, {
+            error: String(data.message),
+            loading: false,
+          });
+        }
+      }).catch((res) => {
+        console.log(res);
+        that.updateRow(id, {
+          error: String(res.message),
+          loading: false,
+        });
+      });
+    }
+  },
+
+  onApproveClick(e: any) {
+    const { dataset: { id } } = e.target;
+    const that = this;
+    const row: any = that.searchRow(id);
+
+    if (row) {
+      that.updateRow(id, {
+        loading: true,
+      });
+      approve({
+        approvalId: row.id,
+        categoryid: row.categoryid,
+        comment: '快速同意 (来自:微信小程序)',
+      }).then((res) => {
+        const data: any = res.data;
+        if(res.statusCode === 200) {
+          if(data.status == 200) {
+            that.removeRow(id);
+          }
+          else {
+            that.updateRow(id, {
+              error: String(data.errorMessage),
+              loading: false,
+            });
+          }
+        }
+        else {
+          that.updateRow(id, {
+            error: String(data.message),
+            loading: false,
+          });
+        }
+      }).catch((res) => {
+        console.log(res);
+        that.updateRow(id, {
+          error: String(res.message),
+          loading: false,
+        });
+      });
+    }
+  },
+
+  searchRow(id: string) {
+    const { assList } = this.data;
+    if (assList) {
+      return assList.find((item: any) => item.id === id);
+    }
+    else {
+      return undefined;
+    }
+  },
+
+  updateRow(id: string, fields: any) {
+    const { assList } = this.data;
+    assList.map((item: any) => {
+      if (item.id == id) {
+        Object.assign(item, {
+          ...fields,
+        });
+      }
+    });
+    this.setData({
+      assList,
+    })
+  },
+
+  removeRow(id: string) {
+    const { assList } = this.data;
+    const newList = assList.filter((item: any) => item.id !== id);
+    this.setData({
+      assList: newList,
+    })
   },
 
   onLoad() {

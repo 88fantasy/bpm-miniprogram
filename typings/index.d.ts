@@ -24,3 +24,23 @@ interface BpmOption {
   wxLogin: () => void;
   getSessionCache: () => SessionData | undefined;
 }
+
+interface AssOperationRequest {
+  token?: string;
+  approvalId: string;
+  comment: string;
+  categoryid: string;
+}
+
+interface ApproveRequest extends AssOperationRequest{
+  nextNode?: string;
+  nextApprovalStaff?: string;
+}
+
+interface StopRequest extends AssOperationRequest{
+
+}
+
+interface RejectRequest extends AssOperationRequest {
+  rejectNode?: string;
+}

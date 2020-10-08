@@ -25,7 +25,7 @@
   <van-divider contentPosition="center" customStyle="color: #1989fa; border-color: #1989fa; font-size: 18px;">
     附件
   </van-divider>
-  <van-cell wx:for="{{detail.attachment}}" title="{{item.title}}"  wx:key="record" is-link  data-url="{{item.url}}" bind:click="onAttachmentClick"/>
+  <van-cell wx:for="{{detail.attachment}}" title="{{item.title}}"  wx:key="record" is-link  data-url="{{item.url}}" data-type="{{item.type}}" bind:click="onAttachmentClick"/>
 </view>
 <view wx:if="{{operation && operation.length > 0}}">
   <van-row>

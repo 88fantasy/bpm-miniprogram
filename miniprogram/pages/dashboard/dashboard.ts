@@ -1,6 +1,6 @@
 // dashboard.ts
 import { wxRequest } from '../../utils/request';
-import { CONSTANT_SESSIONDATA_KEY  } from '../../utils/constant';
+// import { CONSTANT_SESSIONDATA_KEY  } from '../../utils/constant';
 
 Page({
   app: getApp<BpmOption>(),
@@ -11,14 +11,14 @@ Page({
   },
 
   onLogout() {
-    wx.removeStorage({
-      key: CONSTANT_SESSIONDATA_KEY,
-      success () {
+    // wx.removeStorage({
+    //   key: CONSTANT_SESSIONDATA_KEY,
+    //   success () {
         wx.redirectTo({
           url: '/pages/index/index'
         });
-      }
-    })
+      // }
+    // })
     
   },
    

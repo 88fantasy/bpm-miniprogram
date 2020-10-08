@@ -8,11 +8,5 @@
       <view>{{name}}</view>
       <view style="font-size: 13px;color: #888888;">{{uaccount}}</view>
     </mp-cell>
-    <view wx:for="{{}}">
-      <mp-cell link>
-        <view style="display: inline-block; vertical-align: middle">{{cat}}</view>
-        <mp-badge content="8" style="margin-left: 5px;" />
-      </mp-cell>
-    </view>
     <van-button type="danger" block bind:click="onLogout">注销</van-button>  
 </view>
