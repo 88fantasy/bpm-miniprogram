@@ -14,8 +14,8 @@ Page({
     // wx.removeStorage({
     //   key: CONSTANT_SESSIONDATA_KEY,
     //   success () {
-        wx.redirectTo({
-          url: '/pages/index/index'
+        wx.reLaunch({
+          url: '/pages/index/index?auto=false'
         });
       // }
     // })

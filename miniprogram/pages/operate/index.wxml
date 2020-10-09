@@ -1,0 +1,24 @@
+<!--miniprogram/pages/detail/approve/index.wxml-->
+<van-cell-group title="审批意见">
+  <van-cell>
+    <textarea slot="title" style="height:300px;font-size:large;" auto-focus value="{{comment}}" placeholder="请填写" />
+  </van-cell>
+</van-cell-group>
+<van-cell-group title="常用意见">
+  <van-cell>
+    <view slot="title" >
+      <van-button wx:if="{{oper === 'approve'}}" type="primary" size="mini" round bind:click="onAppenfComment" data-text="同意!">同意!</van-button>
+      <van-button wx:if="{{oper === 'approve'}}" type="primary" size="mini" round bind:click="onAppenfComment" data-text="已办!">已办!</van-button>
+      <van-button wx:if="{{oper === 'approve'}}" type="primary" size="mini" round bind:click="onAppenfComment" data-text="已阅!">已阅!</van-button>
+      <van-button wx:if="{{oper === 'reject'}}" type="warning" size="mini" round bind:click="onAppenfComment" data-text="不同意!">不同意!</van-button>
+      <van-button wx:if="{{oper === 'stop'}}" type="danger" size="mini" round bind:click="onAppenfComment" data-text="废弃!">废弃!</van-button>
+    </view>
+  </van-cell>
+</van-cell-group>
+<van-cell-group title="操作">
+  <van-cell>
+    <van-button slot="title" wx:if="{{oper === 'approve'}}" type="primary" icon="passed" block bind:click="onApproveClick" >提交</van-button>
+    <van-button slot="title" wx:if="{{oper === 'reject'}}" type="warning" icon="warning-o" block >驳回</van-button>
+    <van-button slot="title" wx:if="{{oper === 'stop'}}" type="danger" icon="close" block bind:click="onStopClick" >废弃</van-button>
+  </van-cell>
+</van-cell-group>

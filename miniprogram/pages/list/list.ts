@@ -9,10 +9,6 @@ Page({
     assList: []
   },
 
-  onSlideButtonTap(e: any) {
-    console.log('slide button tap', e.detail);
-  },
-
   setError(errMsg: string) {
     this.setData({
       error: errMsg
@@ -43,17 +39,65 @@ Page({
   },
 
   onCellClick(e: any) {
-    const { dataset: { id, categoryid, operation } } = e.target;
-    wx.navigateTo({
-      url: '/pages/detail/index',
-      success: function (res) {
-        // 通过eventChannel向被打开页面传送数据
-        res.eventChannel.emit('acceptDataFromOpenerPage', {
-          approvalid: id,
-          categoryid,
-          operation,
-        })
+    const that = this;
+    const { dataset: { id } } = e.target;
+    const row = this.searchRow(id);
+    if(row) {
+      wx.navigateTo({
+        url: '/pages/detail/index',
+        events: {
+          // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+          detailBack: function(data: {
+            id: string;
+            promise: Promise<WechatMiniprogram.RequestSuccessCallbackResult>;
+          }) {
+            const { id, promise } = data;
+            that.updateRow(data.id, {
+              loading: true,
+            });
+            promise.then((res: WechatMiniprogram.RequestSuccessCallbackResult) => {
+              that.onOperateSuccess(id,res);
+            }).catch((res: any) => {
+              that.onOperateFail(id,res);
+            });
+          }
+        },
+        success: function (res) {
+          // 通过eventChannel向被打开页面传送数据
+          res.eventChannel.emit('acceptDataFromOpenerPage', {
+            approvalid: id,
+            rowData: row,
+          })
+        }
+      });
+    }
+  },
+
+  onOperateSuccess(id: string, res: WechatMiniprogram.RequestSuccessCallbackResult) {
+    const data: any = res.data;
+    if(res.statusCode === 200) {
+      if(data.status == 200) {
+        this.removeRow(id);
       }
+      else {
+        this.updateRow(id, {
+          error: String(data.errorMessage),
+          loading: false,
+        });
+      }
+    }
+    else {
+      this.updateRow(id, {
+        error: String(data.message),
+        loading: false,
+      });
+    }
+  },
+
+  onOperateFail(id: string, res: any) {
+    this.updateRow(id, {
+      error: String(res.message),
+      loading: false,
     });
   },
 
@@ -71,30 +115,9 @@ Page({
         categoryid: row.categoryid,
         comment: '快速中止 (来自:微信小程序)',
       }).then((res) => {
-        const data: any = res.data;
-        if(res.statusCode === 200) {
-          if(data.status == 200) {
-            that.removeRow(id);
-          }
-          else {
-            that.updateRow(id, {
-              error: String(data.errorMessage),
-              loading: false,
-            });
-          }
-        }
-        else {
-          that.updateRow(id, {
-            error: String(data.message),
-            loading: false,
-          });
-        }
+        that.onOperateSuccess(id,res);
       }).catch((res) => {
-        console.log(res);
-        that.updateRow(id, {
-          error: String(res.message),
-          loading: false,
-        });
+        that.onOperateFail(id,res);
       });
     }
   },
@@ -113,30 +136,9 @@ Page({
         categoryid: row.categoryid,
         comment: '快速同意 (来自:微信小程序)',
       }).then((res) => {
-        const data: any = res.data;
-        if(res.statusCode === 200) {
-          if(data.status == 200) {
-            that.removeRow(id);
-          }
-          else {
-            that.updateRow(id, {
-              error: String(data.errorMessage),
-              loading: false,
-            });
-          }
-        }
-        else {
-          that.updateRow(id, {
-            error: String(data.message),
-            loading: false,
-          });
-        }
+        that.onOperateSuccess(id,res);
       }).catch((res) => {
-        console.log(res);
-        that.updateRow(id, {
-          error: String(res.message),
-          loading: false,
-        });
+        that.onOperateFail(id,res);
       });
     }
   },
@@ -175,8 +177,12 @@ Page({
 
   onLoad() {
     // const { app } = this;
-    this.onRefreshData();
+    // this.onRefreshData();
 
+  },
+
+  onShow() {
+    this.onRefreshData();
   },
 
   onPullDownRefresh() {

@@ -5,7 +5,8 @@
     "pages/logs/logs",
     "pages/dashboard/dashboard",
     "pages/list/list",
-    "pages/detail/index"
+    "pages/detail/index",
+    "pages/operate/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -37,15 +38,16 @@
     "kbone": true,
     "weui": true
   },
-  "plugins":{
-    "crypto":{
-        "version":"0.0.003",
-        "provider":"wxf25d506ff81e19fb"
+  "plugins": {
+    "crypto": {
+      "version": "0.0.003",
+      "provider": "wxf25d506ff81e19fb"
     }
   },
   "usingComponents": {
     "van-button": "/miniprogram_npm/@vant/weapp/button/index",
     "van-cell": "/miniprogram_npm/@vant/weapp/cell/index",
-    "van-cell-group": "/miniprogram_npm/@vant/weapp/cell-group/index"
+    "van-cell-group": "/miniprogram_npm/@vant/weapp/cell-group/index",
+    "van-icon": "/miniprogram_npm/@vant/weapp/icon/index"
   }
 }

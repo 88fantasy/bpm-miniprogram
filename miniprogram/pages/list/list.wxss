@@ -1,1 +1,6 @@
 /* miniprogram/pages/list/list.wxss */
+
+.refresh-button {
+  width: 160px;
+  height: 40px;
+}

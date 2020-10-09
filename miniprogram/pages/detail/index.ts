@@ -1,11 +1,14 @@
 // index.ts
 import { wxRequest } from '../../utils/request';
+import { formatTime } from '../../utils/util';
 
 Page({
   app: getApp<BpmOption>(),
   data: {
     approvalid: '',
-    categoryid: '',
+    rowData: { 
+      categoryid : [],
+    },
     operation: [],
     detail: {
       content: [],
@@ -50,8 +53,49 @@ Page({
     }
   },
 
+  onOperateClick(e:any) {
+    const that = this;
+    const { dataset: { operate } } : {
+      dataset: {
+        operate: string;
+      }
+    } = e.target;
+
+    const { rowData } = this.data;
+    if(rowData) {
+      wx.navigateTo({
+        url: `/pages/operate/index`,
+        events: {
+          // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+          operateBack: function(data: { 
+            comment: string;
+            oper: string;
+            promise: Promise<WechatMiniprogram.RequestSuccessCallbackResult>;
+          }) {
+            wx.navigateBack({
+              success:() => {
+                const eventChannel = that.getOpenerEventChannel();
+                eventChannel.emit('detailBack', {
+                  promise: data.promise,
+                });
+              }
+            });
+          }
+        },
+        success: function (res) {
+          // 通过eventChannel向被打开页面传送数据
+          res.eventChannel.emit('acceptDataFromOpenerPage', {
+            rowData: rowData,
+            oper: operate,
+          })
+        }
+      });
+    }
+
+  },
+
   refreshDetail: function () {
-    const { data: { approvalid, categoryid }, app: { globalData: { accountInfo : { token } } } } = this;
+    const { data: { approvalid, rowData }, app: { globalData: { accountInfo : { token } } } } = this;
     const that = this;
     wxRequest({
       header: {
@@ -62,7 +106,7 @@ Page({
       data: {
         token,
         approvalid,
-        categoryid,
+        categoryid: rowData.categoryid,
       }
     }).then((res) => {
       wx.hideLoading();
@@ -75,7 +119,7 @@ Page({
         record.map((item,index) => {
           steps.push({
             text: `${item.operator}(${item.checkmans}): ${item.comment}`,
-            desc: `${item.operatorNode}  ${item.time}`
+            desc: `${item.operatorNode}  ${item.time? formatTime(new Date(item.time)) : "未审"}`
           });
           if(item.time) {
             active = index;
@@ -108,7 +152,7 @@ Page({
     const eventChannel = this.getOpenerEventChannel();
     // 监听acceptDataFromOpenerPage事件，获取上一页面通过eventChannel传送到当前页面的数据
     eventChannel.on('acceptDataFromOpenerPage', function (data) {
-      const operation: [] = data.operation;
+      const operation: [] = data.rowData.operation;
       if (operation) {
         operation.map((item: any) => {
           if (item.oper === 'approve') {

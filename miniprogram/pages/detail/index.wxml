@@ -30,7 +30,7 @@
 <view wx:if="{{operation && operation.length > 0}}">
   <van-row>
     <van-col wx:for="{{operation}}" wx:key="index" span="{{24 / operation.length}}">
-      <van-button block type="{{item.type}}">{{item.opername}}</van-button>
+      <van-button block type="{{item.type}}" bind:click="onOperateClick" data-operate="{{item.oper}}">{{item.opername}}</van-button>
     </van-col>
   </van-row>
 </view>

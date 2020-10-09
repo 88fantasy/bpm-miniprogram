@@ -16,22 +16,6 @@ App<BpmOption>({
       token : accessToken,
       uaccount,
     };
-
-    const sessionData = this.getSessionCache();
-    if(sessionData) {
-      wxRequest({
-        url: "https://wechat-api.gzmpc.com/v1/wechat/bindOpenId",
-        method: 'POST',
-        data: {
-          uaccount: uaccount,
-          openid: sessionData.openid
-        }
-      }).then((res) => {
-        if(res.statusCode == 200) {
-          // const data:any  = res.data;
-        }
-      });
-    }
   },
 
   // 登录

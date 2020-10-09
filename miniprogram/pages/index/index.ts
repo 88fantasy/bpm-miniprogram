@@ -51,7 +51,7 @@ Page({
         }
       } else {
         const {user, pwd } = this.data.formData;
-        that.login(user,pwd);
+        that.login(user,pwd, true);
       }
     })
   },
@@ -75,7 +75,7 @@ Page({
     })
   },
 
-  login(user: string, pwd: string) {
+  login(user: string, pwd: string, bind: boolean = false) {
     const app = getApp<BpmOption>();
     const that = this;
     wxRequest({
@@ -93,7 +93,25 @@ Page({
         const data:any  = res.data;
         app.setAccountInfo(user, data.data.token);
         that.onUserCancel();
-        wx.switchTab({url: "/pages/dashboard/dashboard"});
+        wx.switchTab({url: "/pages/list/list"});
+
+        if(bind) {
+          const sessionData = app.getSessionCache();
+          if(sessionData) {
+            wxRequest({
+              url: "https://wechat-api.gzmpc.com/v1/wechat/bindOpenId",
+              method: 'POST',
+              data: {
+                uaccount: user,
+                openid: sessionData.openid
+              }
+            }).then((res) => {
+              if(res.statusCode == 200) {
+                // const data:any  = res.data;
+              }
+            });
+          }
+        }
       }
       else {
         that.setError(res.errMsg);
@@ -104,12 +122,13 @@ Page({
     });
   },
 
-  onLoad() {
+  onLoad(option: any) {
+    const { auto } = option;
     const { app } = this;
     const that = this;
 
     const sessionData = app.getSessionCache();
-    if(sessionData) {
+    if(sessionData && !auto) {
       wxRequest({
         url: `https://wechat-api.gzmpc.com/v1/wechat/getUaccountByOpenId/${sessionData.openid}`,
       }).then((res) => {

@@ -5,8 +5,7 @@
       <van-button wx:if="{{item.stopable && !item.loading}}" type="danger" block slot="left" custom-style="height:100%;"
         bind:click="onStopClick" data-id="{{item.id}}">中止</van-button>
       <van-cell title="{{item.title}}" use-label-slot size="large" clickable="{{item.clickable}}"
-        bind:click="onCellClick" data-id="{{item.id}}" data-categoryid="{{item.categoryid}}"
-        data-operation="{{item.operation}}">
+        bind:click="onCellClick" data-id="{{item.id}}" >
         <view slot="label">
           <van-tag mark type="primary">{{item.systemname}}</van-tag>
         </view>
@@ -22,5 +21,11 @@
       <van-button wx:if="{{item.approvable && !item.loading}}" type="primary" block slot="right" custom-style="height:100%;"
         bind:click="onApproveClick" data-id="{{item.id}}">通过</van-button>
     </van-swipe-cell>
+
+    <van-empty wx:if="{{!assList || assList.length == 0}}" image="network" description="已完成所有待办" >
+      <van-button round type="danger" class="refresh-button" bind:click="onPullDownRefresh">
+        刷新
+      </van-button>
+    </van-empty>
   </van-cell-group>
 </view>
