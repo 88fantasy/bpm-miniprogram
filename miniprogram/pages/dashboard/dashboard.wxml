@@ -1,4 +1,9 @@
 <!--dashboard.wxml-->
+<van-nav-bar
+  title="移动审批中心"
+  custom-class="linear-color"
+  custom-style="height: 60px;"
+/>
 <view class="page">
     <mp-cell>
       <view slot="title" style="position: relative;margin-right: 10px;">

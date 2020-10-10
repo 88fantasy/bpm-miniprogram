@@ -1,4 +1,5 @@
 {
+  "navigationBarTitleText": "详情",
   "usingComponents": {
     "van-divider": "/miniprogram_npm/@vant/weapp/divider/index",
     "van-tag": "/miniprogram_npm/@vant/weapp/tag/index",

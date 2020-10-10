@@ -1,5 +1,10 @@
 <!--miniprogram/pages/list/list.wxml-->
-<view>
+<van-nav-bar
+  title="移动审批中心"
+  custom-class="linear-color"
+  custom-style="height: 60px;"
+/>
+<scroll-view scroll-y style="height: 100%;">
   <van-cell-group border="{{ true }}">
     <van-swipe-cell right-width="{{ 65 }}" left-width="{{ 65 }}" wx:for="{{assList}}" wx:key="index">
       <van-button wx:if="{{item.stopable && !item.loading}}" type="danger" block slot="left" custom-style="height:100%;"
@@ -28,4 +33,4 @@
       </van-button>
     </van-empty>
   </van-cell-group>
-</view>
+</scroll-view>

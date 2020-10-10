@@ -1,4 +1,5 @@
 {
+  "navigationBarTitleText": "操作",
   "usingComponents": {
     "van-field": "/miniprogram_npm/@vant/weapp/field/index"
   }

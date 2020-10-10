@@ -1,1 +1,5 @@
 /* miniprogram/pages/dashboard.wxss */
+
+.linear-color {
+  background-image: linear-gradient(-225deg, #77FFD2 0%, #6297DB 48%, #1EECFF 100%);
+}
