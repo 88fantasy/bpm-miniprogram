@@ -1,6 +1,6 @@
 import { wxRequest }  from '../utils/request';
 
-const operate = (url: string, options: ApproveRequest, other?: any) => {
+const operate = (url: string, options: CommonOperationRequest, other?: any) => {
   const app = getApp<BpmOption>();
   const { token }  = app.globalData.accountInfo; 
   if(!options.token) {
@@ -29,4 +29,16 @@ export const reject = (options: RejectRequest, other?: any) => {
 
 export const stop = (options: StopRequest, other?: any) => {
   return operate('/ass/stop',options,other);
+}
+
+export const sign = (options: SignRequest, other?: any) => {
+  return operate('/ass/sign',options,other);
+}
+
+export const abolish = (options: SignRequest, other?: any) => {
+  return operate('/ass/abolish',options,other);
+}
+
+export const reply = (options: ReplyRequest, other?: any) => {
+  return operate('/ass/reply',options,other);
 }

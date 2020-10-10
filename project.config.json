@@ -31,7 +31,7 @@
     "uploadWithSourceMap": true,
     "compileHotReLoad": true,
     "useMultiFrameRuntime": false,
-    "useApiHook": false,
+    "useApiHook": true,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
@@ -45,6 +45,6 @@
   },
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
-  "appid": "wx87d027dd5e097c89",
+  "appid": "wxc3c33c1a8ecb5bd2",
   "condition": {}
 }

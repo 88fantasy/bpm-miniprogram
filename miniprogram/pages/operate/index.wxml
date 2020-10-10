@@ -1,7 +1,7 @@
 <!--miniprogram/pages/detail/approve/index.wxml-->
 <van-cell-group title="审批意见">
   <van-cell>
-    <textarea slot="title" style="height:300px;font-size:large;" auto-focus value="{{comment}}" placeholder="请填写" />
+    <textarea slot="title" style="height:200px;font-size:large;" auto-focus value="{{comment}}" placeholder="请填写" />
   </van-cell>
 </van-cell-group>
 <van-cell-group title="常用意见">
@@ -20,5 +20,18 @@
     <van-button slot="title" wx:if="{{oper === 'approve'}}" type="primary" icon="passed" block bind:click="onApproveClick" >提交</van-button>
     <van-button slot="title" wx:if="{{oper === 'reject'}}" type="warning" icon="warning-o" block >驳回</van-button>
     <van-button slot="title" wx:if="{{oper === 'stop'}}" type="danger" icon="close" block bind:click="onStopClick" >废弃</van-button>
+    <van-button slot="title" wx:if="{{oper === 'sign'}}" type="default" icon="close" block bind:click="onSignClick" >签字</van-button>
+    <van-button slot="title" wx:if="{{oper === 'abolish'}}" type="default" icon="close" block bind:click="onAbolishClick" >取消沟通</van-button>
+    <van-button slot="title" wx:if="{{oper === 'reply'}}" type="default" icon="close" block bind:click="onReplyClick" >回覆沟通</van-button>
   </van-cell>
 </van-cell-group>
+<van-overlay show="{{msgShow}}"  >
+    <mp-msg type="{{msgInfo.type}}" title="{{msgInfo.title}}">
+        <view slot="desc">
+          {{msgInfo.desc}}
+        </view>
+        <view slot="handle">
+            <button class="weui-btn" type="primary" plain bindtap="bindMsgHide">我知道了</button>
+        </view>
+    </mp-msg>
+  </van-overlay>

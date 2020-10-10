@@ -1,6 +1,8 @@
 {
   "navigationBarTitleText": "操作",
   "usingComponents": {
-    "van-field": "/miniprogram_npm/@vant/weapp/field/index"
+    "van-field": "/miniprogram_npm/@vant/weapp/field/index",
+    "mp-msg": "/miniprogram_npm/weui-miniprogram/msg/msg",
+    "van-overlay": "/miniprogram_npm/@vant/weapp/overlay/index"
   }
 }

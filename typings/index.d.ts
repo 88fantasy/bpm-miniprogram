@@ -25,10 +25,13 @@ interface BpmOption {
   getSessionCache: () => SessionData | undefined;
 }
 
-interface AssOperationRequest {
+interface CommonOperationRequest {
   token?: string;
   approvalId: string;
   comment: string;
+}
+
+interface AssOperationRequest extends CommonOperationRequest {
   categoryid: string;
 }
 
@@ -43,4 +46,16 @@ interface StopRequest extends AssOperationRequest{
 
 interface RejectRequest extends AssOperationRequest {
   rejectNode?: string;
+}
+
+interface SignRequest extends CommonOperationRequest{
+
+}
+
+interface AbolishRequest extends CommonOperationRequest{
+
+}
+
+interface ReplyRequest extends CommonOperationRequest{
+
 }

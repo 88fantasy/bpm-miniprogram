@@ -5,7 +5,7 @@ import { CONSTANT_SESSIONDATA_KEY  } from './utils/constant';
 App<BpmOption>({
   globalData: {
     baseUrl: "https://app.gzmpc.com/NewMobilePlatform/api",
-    appId: "wx87d027dd5e097c89",
+    appId: "wxc3c33c1a8ecb5bd2",
     accountInfo : {
       
     }

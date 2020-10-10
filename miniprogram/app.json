@@ -9,6 +9,7 @@
     "pages/operate/index"
   ],
   "window": {
+    "backgroundColor": "#eeeeee",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "移动审批中心",

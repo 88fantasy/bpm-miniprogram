@@ -1,6 +1,6 @@
 
 // import { wxRequest } from '../../../utils/request';
-import { approve, stop, reject } from '../../services/assapi';
+import { approve, stop, reject, abolish, reply, sign } from '../../services/assapi';
 
 Page({
   app: getApp<BpmOption>(),
@@ -14,6 +14,12 @@ Page({
       id: '',
       categoryid: '',
     },
+    msgShow: false,
+    msgInfo: {
+      type: '',
+      title: '',
+      desc: '',
+    }
   },
 
   onAppenfComment(e: any) {
@@ -33,128 +39,121 @@ Page({
   onApproveClick() {
     const that = this;
     // const { rowData, comment, oper } = that.data;
-    const { rowData, comment,  } = that.data
+    const { rowData, comment, } = that.data
 
     if (rowData) {
-      // const eventChannel = that.getOpenerEventChannel();
-
-      // const promise = approve({
-      //   approvalId: rowData.id,
-      //   categoryid: rowData.categoryid,
-      //   comment: `${comment} (来自:微信小程序)`,
-      // });
-
-      // eventChannel.emit('operateBack', {
-      //   comment,
-      //   oper,
-      //   promise,
-      // });
-
       approve({
         approvalId: rowData.id,
         categoryid: rowData.categoryid,
         comment: `${comment} (来自:微信小程序)`,
-      }).then((res) => {
-        const data: any = res.data;
-        if(res.statusCode === 200) {
-          if(data.status == 200) {
-            wx.navigateBack({
-              delta: 2,
-            });
-          }
-          else {
-            wx.showToast({
-              title: data.errorMessage
-            });
-          }
-        }
-        else {
-          wx.showToast({
-            title: data.message
-          });
-        }
-      }).catch((res) => {
-        wx.showToast({
-          title: res.message
-        });
-      });
-
-      // wx.navigateBack({
-        
-      // });
+      }).then(that.operateSuccess)
+        .catch(that.operateFail);
     }
   },
 
   onRejectClick() {
     const that = this;
-    const { rowData, comment,  } = that.data;
+    const { rowData, comment, } = that.data;
 
     if (rowData) {
       reject({
         approvalId: rowData.id,
         categoryid: rowData.categoryid,
         comment: `${comment} (来自:微信小程序)`,
-      }).then((res) => {
-        const data: any = res.data;
-        if(res.statusCode === 200) {
-          if(data.status == 200) {
-            wx.navigateBack({
-              delta: 2,
-            });
-          }
-          else {
-            wx.showToast({
-              title: data.errorMessage
-            });
-          }
-        }
-        else {
-          wx.showToast({
-            title: data.message
-          });
-        }
-      }).catch((res) => {
-        wx.showToast({
-          title: res.message
-        });
-      });
+      }).then(that.operateSuccess)
+        .catch(that.operateFail);
     }
   },
 
   onStopClick() {
     const that = this;
-    const { rowData, comment,  } = that.data;
+    const { rowData, comment, } = that.data;
 
     if (rowData) {
       stop({
         approvalId: rowData.id,
         categoryid: rowData.categoryid,
         comment: `${comment} (来自:微信小程序)`,
-      }).then((res) => {
-        const data: any = res.data;
-        if(res.statusCode === 200) {
-          if(data.status == 200) {
-            wx.navigateBack({
-              delta: 2,
-            });
-          }
-          else {
-            wx.showToast({
-              title: data.errorMessage
-            });
-          }
-        }
-        else {
-          wx.showToast({
-            title: data.message
-          });
-        }
-      }).catch((res) => {
-        wx.showToast({
-          title: res.message
+      }).then(that.operateSuccess)
+        .catch(that.operateFail);
+    }
+  },
+
+  onSignClick() {
+    const that = this;
+    const { rowData, comment, } = that.data;
+
+    if (rowData) {
+      sign({
+        approvalId: rowData.id,
+        comment: `${comment} (来自:微信小程序)`,
+      }).then(that.operateSuccess)
+        .catch(that.operateFail);
+    }
+  },
+
+  onAbolishClick() {
+    const that = this;
+    const { rowData, comment, } = that.data;
+
+    if (rowData) {
+      abolish({
+        approvalId: rowData.id,
+        comment: `${comment} (来自:微信小程序)`,
+      }).then(that.operateSuccess)
+        .catch(that.operateFail);
+    }
+  },
+
+  onReplyClick() {
+    const that = this;
+    const { rowData, comment, } = that.data;
+
+    if (rowData) {
+      reply({
+        approvalId: rowData.id,
+        comment: `${comment} (来自:微信小程序)`,
+      }).then(that.operateSuccess)
+        .catch(that.operateFail);
+    }
+  },
+
+  operateSuccess(res: WechatMiniprogram.RequestSuccessCallbackResult) {
+    const data: any = res.data;
+    if (res.statusCode === 200) {
+      if (data.status == 200) {
+        wx.navigateBack({
+          delta: 2,
         });
+      }
+      else {
+        this.operateFail({
+          message: data.errorMessage,
+        });
+      }
+    }
+    else {
+      this.operateFail({
+        message: data.message,
       });
     }
+  },
+
+  operateFail(res: any) {
+    this.setData({
+      msgShow: true,
+      msgInfo: {
+        type: 'error',
+        title: '操作失败',
+        desc: res.message,
+      },
+    });
+  },
+
+  bindMsgHide() {
+    this.setData({
+      msgShow: false,
+    });
   },
 
   /**

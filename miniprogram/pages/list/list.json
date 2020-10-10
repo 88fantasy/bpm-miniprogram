@@ -1,5 +1,4 @@
 {
-  "enablePullDownRefresh": true,
   "navigationStyle": "custom",
   "disableScroll": true,
   "usingComponents": {

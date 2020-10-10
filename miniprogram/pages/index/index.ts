@@ -11,8 +11,6 @@ Page({
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    showUserDialog: false,
-
     rules: [{
       name: 'user',
       rules: { required: true, message: '帐号必填' },
@@ -20,17 +18,19 @@ Page({
       name: 'pwd',
       rules: { required: true, message: '密码必填' },
     }],
-    confirmButton: [{ text: '确定' }],
     formData: {
       user: "",
       pwd: ""
-    }
+    },
+     msgShow: false,
+     error: '',
+
   },
   // 事件处理函数
-  bindViewTap() {
-    wx.navigateTo({
-      url: '../logs/logs',
-    })
+  bindMsgHide() {
+   this.setData({
+    msgShow : false,
+   });
   },
 
   onShowUser() {
@@ -58,14 +58,9 @@ Page({
 
   setError(errMsg: string) {
     this.setData({
-      error: errMsg
+      error: errMsg,
+      msgShow: true,
     });
-  },
-
-  onUserCancel() {
-    this.setData({
-      showUserDialog: false
-    })
   },
 
   formInputChange(e: any) {
@@ -92,7 +87,6 @@ Page({
       if(res.statusCode == 200) {
         const data:any  = res.data;
         app.setAccountInfo(user, data.data.token);
-        that.onUserCancel();
         wx.switchTab({url: "/pages/list/list"});
 
         if(bind) {
