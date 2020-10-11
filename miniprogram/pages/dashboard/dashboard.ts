@@ -7,7 +7,20 @@ Page({
   data: {
     name: "姓名",
     uaccount: "工号",
-    catelogs:[]
+    catelogs:[],
+    changeLogs: [{
+      text: 'OA审批操作支持选择节点',
+      desc: '2020-10-11',
+    },{
+      text: '支持审批操作',
+      desc: '2020-10-07',
+    },{
+      text: '支持绑定后自动登陆',
+      desc: '2020-10-05',
+    },{
+      text: '初始版本上线',
+      desc: '2020-10-03',
+    }],
   },
 
   onLogout() {

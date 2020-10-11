@@ -3,6 +3,9 @@
   "usingComponents": {
     "van-field": "/miniprogram_npm/@vant/weapp/field/index",
     "mp-msg": "/miniprogram_npm/weui-miniprogram/msg/msg",
-    "van-overlay": "/miniprogram_npm/@vant/weapp/overlay/index"
+    "van-overlay": "/miniprogram_npm/@vant/weapp/overlay/index",
+    "van-radio": "/miniprogram_npm/@vant/weapp/radio/index",
+    "van-radio-group": "/miniprogram_npm/@vant/weapp/radio-group/index",
+    "van-notice-bar": "/miniprogram_npm/@vant/weapp/notice-bar/index"
   }
 }

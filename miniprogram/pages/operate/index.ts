@@ -10,9 +10,11 @@ Page({
   data: {
     comment: '',
     oper: '',
+    node: '',
     rowData: {
       id: '',
       categoryid: '',
+      isNeedApprover: 0,
     },
     msgShow: false,
     msgInfo: {
@@ -22,7 +24,7 @@ Page({
     }
   },
 
-  onAppenfComment(e: any) {
+  onAppendComment(e: any) {
     const { dataset: { text } }: {
       dataset: {
         text: string;
@@ -36,30 +38,53 @@ Page({
     });
   },
 
+  onNodeChange(event: any) {
+    this.setData({
+      node: event.detail,
+    });
+  },
+
+  onRadioClick(event: any) {
+    const { name } = event.currentTarget.dataset;
+    this.setData({
+      node: name,
+    });
+  },
+
+
   onApproveClick() {
     const that = this;
     // const { rowData, comment, oper } = that.data;
-    const { rowData, comment, } = that.data
+    const { rowData, comment, node} = that.data
 
     if (rowData) {
-      approve({
-        approvalId: rowData.id,
-        categoryid: rowData.categoryid,
-        comment: `${comment} (来自:微信小程序)`,
-      }).then(that.operateSuccess)
-        .catch(that.operateFail);
+      if(rowData.isNeedApprover === 1) {
+        that.operateFail({
+          message: '暂时不支持选人',
+        })
+      }
+      else {
+        approve({
+          approvalId: rowData.id,
+          categoryid: rowData.categoryid,
+          comment: `${comment} (来自:微信小程序)`,
+          nextNode: node,
+        }).then(that.operateSuccess)
+          .catch(that.operateFail);
+      }
     }
   },
 
   onRejectClick() {
     const that = this;
-    const { rowData, comment, } = that.data;
+    const { rowData, comment, node} = that.data;
 
     if (rowData) {
       reject({
         approvalId: rowData.id,
         categoryid: rowData.categoryid,
         comment: `${comment} (来自:微信小程序)`,
+        rejectNode: node,
       }).then(that.operateSuccess)
         .catch(that.operateFail);
     }
@@ -165,9 +190,17 @@ Page({
     // 监听acceptDataFromOpenerPage事件，获取上一页面通过eventChannel传送到当前页面的数据
     eventChannel.on('acceptDataFromOpenerPage', function (data) {
       const { rowData, oper }: { rowData: any; oper: string; } = data;
+      let node ='';
+      if(oper === 'approve') {
+        node = rowData && rowData.nextNode ? rowData.nextNode[0].id : '';
+      }
+      else if(oper === 'reject') {
+        node = rowData && rowData.rejectNode ? rowData.rejectNode[0].id : '';
+      }
       that.setData({
         rowData,
         oper,
+        node,
       });
     })
   },
