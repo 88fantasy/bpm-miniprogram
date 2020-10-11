@@ -5,13 +5,11 @@
   custom-style="height: 60px;"
 />
 <view class="page">
-    <mp-cell>
-      <view slot="title" style="position: relative;margin-right: 10px;">
-        <image src="../../images/logo.svg" style="width: 50px; height: 50px; display: block" />
-      </view>
-      <view>{{name}}</view>
-      <view style="font-size: 13px;color: #888888;">{{uaccount}}</view>
-    </mp-cell>
+  <view class="userinfo">
+    <image wx:if="{{userInfo.avatarUrl}}" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+    <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+    <view>{{name}}({{uaccount}})</view>
+  </view>
     <text>更新日志:</text>
     <van-steps
       steps="{{ changeLogs }}"

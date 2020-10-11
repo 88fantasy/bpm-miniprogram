@@ -8,7 +8,8 @@ App<BpmOption>({
     appId: "wxc3c33c1a8ecb5bd2",
     accountInfo : {
       
-    }
+    },
+    hasUserInfo: false,
   },
 
   setAccountInfo(uaccount: string, accessToken: string) {
@@ -68,6 +69,22 @@ App<BpmOption>({
   onLaunch() {
     const that = this;
 
+
+    wx.getSetting({
+      success (res) {
+        if(res.authSetting['scope.userInfo']){
+          wx.getUserInfo({
+            success:(res) => {
+              that.globalData.userInfo = res.userInfo;
+              that.globalData.hasUserInfo = true;
+              if(that.userInfoReadyCallback) {
+                that.userInfoReadyCallback(res);
+              }
+            }
+          });
+        }
+      }
+    })
 
     wx.checkSession({
       success() {

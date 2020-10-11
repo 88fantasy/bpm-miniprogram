@@ -61,15 +61,20 @@ Page({
       if(rowData.isNeedApprover === 1) {
         that.operateFail({
           message: '暂时不支持选人',
-        })
+        });
       }
       else {
-        approve({
+        const request: ApproveRequest = {
           approvalId: rowData.id,
           categoryid: rowData.categoryid,
           comment: `${comment} (来自:微信小程序)`,
-          nextNode: node,
-        }).then(that.operateSuccess)
+        };
+        if(node && node !== '') {
+          Object.assign(request, {
+            nextNode: node
+          });
+        }
+        approve(request).then(that.operateSuccess)
           .catch(that.operateFail);
       }
     }
@@ -80,12 +85,17 @@ Page({
     const { rowData, comment, node} = that.data;
 
     if (rowData) {
-      reject({
+      const request: RejectRequest = {
         approvalId: rowData.id,
         categoryid: rowData.categoryid,
         comment: `${comment} (来自:微信小程序)`,
-        rejectNode: node,
-      }).then(that.operateSuccess)
+      };
+      if(node && node !== '') {
+        Object.assign(request, {
+          rejectNode: node
+        });
+      }
+      reject(request).then(that.operateSuccess)
         .catch(that.operateFail);
     }
   },
@@ -192,10 +202,10 @@ Page({
       const { rowData, oper }: { rowData: any; oper: string; } = data;
       let node ='';
       if(oper === 'approve') {
-        node = rowData && rowData.nextNode ? rowData.nextNode[0].id : '';
+        node = rowData && rowData.nextNode && rowData.nextNode.length > 0 ? rowData.nextNode[0].id : '';
       }
       else if(oper === 'reject') {
-        node = rowData && rowData.rejectNode ? rowData.rejectNode[0].id : '';
+        node = rowData && rowData.rejectNode && rowData.rejectNode.length > 0 ? rowData.rejectNode[0].id : '';
       }
       that.setData({
         rowData,

@@ -3,15 +3,15 @@
   left-icon="volume-o"
   text="暂时尚不支持选人审批,请期待"
 />
-<van-cell-group wx:if="{{oper === 'approve'}}" title="下个节点">
-  <van-radio-group wx:if="{{rowData && rowData.nextNode && rowData.nextNode.length > 0}}" value="{{ node }}" bind:change="onNodeChange">
+<van-cell-group wx:if="{{oper === 'approve' && rowData && rowData.nextNode && rowData.nextNode.length > 0}}" title="下个节点">
+  <van-radio-group  value="{{ node }}" bind:change="onNodeChange">
     <van-cell wx:for="{{rowData.nextNode}}" wx:key="radio" title="{{item.name}}" clickable data-name="{{item.id}}" bind:click="onRadioClick">
       <van-radio slot="right-icon"  name="{{item.id}}" checked-color="#07c160"></van-radio>
     </van-cell>
   </van-radio-group>
 </van-cell-group>
-<van-cell-group wx:if="{{oper === 'reject'}}" title="返回节点">
-  <van-radio-group wx:if="{{rowData && rowData.recjectNode && rowData.recjectNode.length > 0}}" value="{{ node }}" bind:change="onNodeChange">
+<van-cell-group wx:if="{{oper === 'reject' && rowData && rowData.recjectNode && rowData.recjectNode.length > 0}}" title="返回节点">
+  <van-radio-group value="{{ node }}" bind:change="onNodeChange">
     <van-cell wx:for="{{rowData.recjectNode}}" wx:key="radio" title="{{item.name}}" clickable data-name="{{item.id}}" bind:click="onRadioClick">
       <van-radio slot="right-icon"  name="{{item.id}}" checked-color="#07c160"></van-radio>
     </van-cell>

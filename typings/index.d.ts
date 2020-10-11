@@ -18,6 +18,7 @@ interface BpmOption {
     sessionData?: SessionData;
     accountInfo: AccountInfo;
     baseUrl: string;
+    hasUserInfo: boolean;
   }
   setAccountInfo: (uaccount: string, accessToken: string) => void;
   userInfoReadyCallback?: WechatMiniprogram.GetUserInfoSuccessCallback;

@@ -5,6 +5,7 @@ import { wxRequest } from '../../utils/request';
 Page({
   app: getApp<BpmOption>(),
   data: {
+    userInfo: {},
     name: "姓名",
     uaccount: "工号",
     catelogs:[],
@@ -34,10 +35,22 @@ Page({
     // })
     
   },
+
+  getUserInfo(e: any) {
+    const app = getApp<BpmOption>();
+    app.globalData.userInfo = e.detail.userInfo
+    
+  },
    
   onLoad() {
     const { app } = this;
     const that = this;
+
+    if(app.globalData.hasUserInfo) {
+      this.setData({
+        userInfo: app.globalData.userInfo,
+      })
+    }
 
     const uaccount= app.globalData.accountInfo?.uaccount;
     if(uaccount) {
