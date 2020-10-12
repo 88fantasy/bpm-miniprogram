@@ -3,7 +3,7 @@
   <image style="width:100%;" mode="widthFix" src="/images/login.png" />
   <view class="page-section">
     <view class="center" style="flex-direction:column;justify-content: center;">
-      <text>欢迎使用审批中心</text>
+      <text style="color:red;">请先绑定用户信息</text>
     </view>
   </view>
   <view style="flex-direction:column;justify-content: center;">
