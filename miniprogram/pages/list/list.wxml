@@ -2,10 +2,11 @@
 <van-nav-bar
   title="移动审批中心"
   custom-class="linear-color"
+  fixed
 >
   <van-icon name="replay"  slot="left" bind:click="onRefreshData" />
 </van-nav-bar>
-<scroll-view scroll-y style="height: 100%;">
+<scroll-view scroll-y style="height: 100%; margin-top: 66px;">
   <van-cell-group border="{{ true }}">
     <van-swipe-cell right-width="{{ 65 }}" left-width="{{ 65 }}" wx:for="{{assList}}" wx:key="index">
       <van-button wx:if="{{item.stopable && !item.loading}}" type="danger" block slot="left" custom-style="height:100%;"
