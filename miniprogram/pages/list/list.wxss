@@ -8,3 +8,13 @@
 .linear-color {
   background-image: linear-gradient(to top, #a8edea 0%, #fed6e3 100%);
 }
+
+.approve-border {
+  border-right-style: solid;
+  border-right-color: #07c160;
+}
+
+.stop-border {
+  border-left-style: solid;
+  border-left-color: #ee0a24;
+}
