@@ -26,10 +26,10 @@ Page({
   },
 
   onAttachmentClick(e: any) {
-    const { dataset: { url } } : {
+    const { dataset: { url, type } } : {
       dataset: {
         url: string;
-        type: string;
+        type?: 'doc' | 'docx' | 'xls' | 'xlsx' | 'ppt' | 'pptx' | 'pdf';
       }
     } = e.target;
     if(url) {
@@ -40,7 +40,7 @@ Page({
           const filePath = res.tempFilePath;
           wx.openDocument({
             filePath,
-            // fileType: type,
+            fileType: type,
             success: function (res) {
               console.log('打开文档成功',res);
             }

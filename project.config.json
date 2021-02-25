@@ -30,7 +30,7 @@
     "checkSiteMap": true,
     "uploadWithSourceMap": true,
     "compileHotReLoad": true,
-    "useMultiFrameRuntime": false,
+    "useMultiFrameRuntime": true,
     "useApiHook": true,
     "babelSetting": {
       "ignore": [],
@@ -40,11 +40,17 @@
     "useIsolateContext": true,
     "useCompilerModule": true,
     "userConfirmedUseCompilerModuleSwitch": true,
+    "userConfirmedBundleSwitch": false,
     "packNpmManually": true,
-    "packNpmRelationList": []
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "bundle": false,
+    "useApiHostProcess": true
   },
-  "simulatorType": "wechat",
-  "simulatorPluginLibVersion": {},
+  "simulatorType": "qywx_simulator_plugin",
+  "simulatorPluginLibVersion": {
+    "qywx_simulator_plugin": "2.10.1"
+  },
   "appid": "wxc3c33c1a8ecb5bd2",
   "condition": {}
 }

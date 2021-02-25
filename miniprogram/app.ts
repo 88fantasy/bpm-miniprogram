@@ -1,20 +1,22 @@
 // app.ts
 import { wxRequest } from './utils/request';
-import { CONSTANT_SESSIONDATA_KEY  } from './utils/constant';
+import { CONSTANT_SESSIONDATA_KEY } from './utils/constant';
 
 App<BpmOption>({
   globalData: {
     baseUrl: "https://app.gzmpc.com/NewMobilePlatform/api",
-    appId: "wxc3c33c1a8ecb5bd2",
-    accountInfo : {
-      
+    accountInfo: {
+
     },
+    appId: "wxc3c33c1a8ecb5bd2",
+    agentId: 1000012,
     hasUserInfo: false,
+    isCom: false,
   },
 
   setAccountInfo(uaccount: string, accessToken: string) {
     this.globalData.accountInfo = {
-      token : accessToken,
+      token: accessToken,
       uaccount,
     };
   },
@@ -22,7 +24,8 @@ App<BpmOption>({
   // 登录
   wxLogin() {
     const that = this;
-    const { appId } = this.globalData;
+    const { appId, } = this.globalData;
+
     wx.login({
       success: res => {
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
@@ -53,8 +56,8 @@ App<BpmOption>({
 
   getSessionCache() {
     try {
-      const value:SessionData  = wx.getStorageSync(CONSTANT_SESSIONDATA_KEY);
-      if(value) {
+      const value: SessionData = wx.getStorageSync(CONSTANT_SESSIONDATA_KEY);
+      if (value) {
         this.globalData.sessionData = value;
         return value;
       }
@@ -66,18 +69,41 @@ App<BpmOption>({
     }
   },
 
-  onLaunch() {
+  getComSessionCache() {
+    try {
+      const value: ComSessionData = wx.getStorageSync(CONSTANT_SESSIONDATA_KEY);
+      if (value) {
+        this.globalData.comSessionData = value;
+        return value;
+      }
+      else {
+        return undefined;
+      }
+    } catch (e) {
+      return undefined;
+    }
+  },
+
+  async onLaunch() {
     const that = this;
 
+    /**
+     * 判断当前运行环境
+     */
+    await wx.getSystemInfo({
+      success(res) {
+        that.globalData.isCom = res.environment === 'wxwork';
+      }
+    });
 
     wx.getSetting({
-      success (res) {
-        if(res.authSetting['scope.userInfo']){
+      success(res) {
+        if (res.authSetting['scope.userInfo']) {
           wx.getUserInfo({
-            success:(res) => {
+            success: (res) => {
               that.globalData.userInfo = res.userInfo;
               that.globalData.hasUserInfo = true;
-              if(that.userInfoReadyCallback) {
+              if (that.userInfoReadyCallback) {
                 that.userInfoReadyCallback(res);
               }
             }
@@ -86,19 +112,21 @@ App<BpmOption>({
       }
     })
 
-    wx.checkSession({
-      success() {
-        //session_key 未过期，并且在本生命周期一直有效
-        const sessionData = that.getSessionCache();
-        if(!sessionData) {
+    if (!that.globalData.isCom) {
+      wx.checkSession({
+        success() {
+          //session_key 未过期，并且在本生命周期一直有效
+          const sessionData = that.getSessionCache();
+          if (!sessionData) {
+            that.wxLogin();
+          }
+        },
+        fail() {
+          // session_key 已经失效，需要重新执行登录流程
           that.wxLogin();
         }
-      },
-      fail() {
-        // session_key 已经失效，需要重新执行登录流程
-        that.wxLogin();
-      }
-    })
+      })
+    }
 
     // 获取用户信息
     wx.getSetting({

@@ -11,19 +11,49 @@ interface SessionData {
   unionid?: string;
 }
 
+type ComSessionData = {
+  /**
+   * 企业Id
+   */
+  corpid: string;
+  /**
+   * 企业微信帐号关联的工号
+   */
+  userid: string;
+}
+
 interface BpmOption {
   globalData: {
+    /**
+     * 微信用户信息
+     */
     userInfo?: WechatMiniprogram.UserInfo;
-    appId: string;
     sessionData?: SessionData;
+    comSessionData?: ComSessionData;
+    appId: string;
+    agentId: number;
+    /**
+     * 帐号信息
+     */
     accountInfo: AccountInfo;
+    /**
+     * 后端网关地址
+     */
     baseUrl: string;
+    /**
+     * 是否已登录
+     */
     hasUserInfo: boolean;
+    /**
+     * 是否企业微信
+     */
+    isCom: boolean;
   }
   setAccountInfo: (uaccount: string, accessToken: string) => void;
   userInfoReadyCallback?: WechatMiniprogram.GetUserInfoSuccessCallback;
   wxLogin: () => void;
   getSessionCache: () => SessionData | undefined;
+  getComSessionCache: () => ComSessionData | undefined;
 }
 
 interface CommonOperationRequest {
@@ -60,3 +90,10 @@ interface AbolishRequest extends CommonOperationRequest{
 interface ReplyRequest extends CommonOperationRequest{
 
 }
+
+type WechatMiniprogramCommonResult = {
+  errcode: number;
+  errmsg: string;
+}
+
+type WechatMiniprogramComCode2SessionResult = WechatMiniprogramCommonResult & ComSessionData; 

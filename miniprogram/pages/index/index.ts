@@ -1,5 +1,6 @@
 // index.ts
 import { wxRequest } from '../../utils/request';
+import { CONSTANT_SESSIONDATA_KEY } from '../../utils/constant';
 
 
 const WXBizDataCrypt = require('../../utils/RdWXBizDataCrypt');
@@ -67,6 +68,45 @@ Page({
     })
   },
 
+  comLogin() {
+    const that = this;
+    const app = getApp<BpmOption>();
+    wx.qy.login({
+      success: function(res: { code: string; errMsg: string; }) {
+        if (res.code) {
+          //发起网络请求
+          wxRequest({
+            url: "https://wechat-api.gzmpc.com/v1/com/code2Session",
+            method: 'POST',
+            data: {
+              agentId: app.globalData.agentId,
+              jsCode: res.code,
+            }
+          }).then((res) => {
+            if (res.statusCode == 200) {
+              const data: any = res.data;
+              const result: WechatMiniprogramComCode2SessionResult = data;
+              if(result.errcode === 0) {
+                const sessionData: ComSessionData = { ...result }; 
+                app.globalData.comSessionData = sessionData;
+
+                //保存到缓存中
+                wx.setStorageSync(CONSTANT_SESSIONDATA_KEY, sessionData);
+
+                that.login(sessionData.userid, "mima");
+              }
+            }
+            else {
+
+            }
+          });
+        } else {
+          console.log('登录失败！' + res.errMsg)
+        }
+      }
+    });
+  },
+
   login(user: string, pwd: string, bind: boolean = false) {
     const app = getApp<BpmOption>();
     const that = this;
@@ -86,7 +126,7 @@ Page({
         app.setAccountInfo(user, data.data.token);
         wx.switchTab({url: "/pages/list/list"});
 
-        if(bind) {
+        if(bind && !app.globalData.isCom) {
           const sessionData = app.getSessionCache();
           if(sessionData) {
             wxRequest({
@@ -118,18 +158,36 @@ Page({
     const { app } = this;
     const that = this;
 
-    const sessionData = app.getSessionCache();
-    if(sessionData && !auto) {
-      wxRequest({
-        url: `https://wechat-api.gzmpc.com/v1/wechat/getUaccountByOpenId/${sessionData.openid}`,
-      }).then((res) => {
-        if(res.statusCode == 200) {
-          const data:any  = res.data;
-          if(data && data.errcode == 0) {
-            that.login(data.uaccount, "mima");
+    if(!app.globalData.isCom) {
+      const sessionData = app.getSessionCache();
+      if(sessionData && !auto) {
+        wxRequest({
+          url: `https://wechat-api.gzmpc.com/v1/wechat/getUaccountByOpenId/${sessionData.openid}`,
+        }).then((res) => {
+          if(res.statusCode == 200) {
+            const data:any  = res.data;
+            if(data && data.errcode == 0) {
+              that.login(data.uaccount, "mima");
+            }
           }
+        });
+      }
+    }
+    else {
+      wx.qy.checkSession({
+        success: function(){
+          //session_key 未过期，并且在本生命周期一直有效
+          const sessionData = app.getComSessionCache();
+          if(sessionData) {
+            that.login(sessionData.userid, "mima");
+          }
+          that.comLogin();
+        },
+        fail: function(){
+          // session_key 已经失效，需要重新执行登录流程
+          that.comLogin();
         }
-      });
+      })
     }
   },
   getUserInfo(e: any) {

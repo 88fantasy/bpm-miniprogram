@@ -1893,6 +1893,7 @@ backgroundAudioManager.src = 'http://ws.stream.qqmusic.qq.com/M500001VfvsJ21xFqb
         success?: GetSystemInfoSuccessCallback
     }
     interface GetSystemInfoSuccessCallbackResult {
+        environment: string
         /** 客户端基础库版本
          *
          * 最低基础库： `1.1.0` */
@@ -8836,6 +8837,7 @@ worker.postMessage({
         terminate(): void
     }
     interface Wx {
+        qy: any
         /** [ArrayBuffer wx.base64ToArrayBuffer(string base64)](https://developers.weixin.qq.com/miniprogram/dev/api/base/wx.base64ToArrayBuffer.html)
          *
          * 将 Base64 字符串转成 ArrayBuffer 对象

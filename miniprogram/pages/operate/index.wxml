@@ -17,6 +17,13 @@
     </van-cell>
   </van-radio-group>
 </van-cell-group>
+<van-cell-group wx:if="{{oper === 'send' && isCom && rowData  }}" title="选择人员">
+  <van-radio-group value="{{ node }}" bind:change="onNodeChange">
+    <van-cell wx:for="{{rowData.recjectNode}}" wx:key="radio" title="{{item.name}}" clickable data-name="{{item.id}}" bind:click="onRadioClick">
+      <van-radio slot="right-icon"  name="{{item.id}}" checked-color="#07c160"></van-radio>
+    </van-cell>
+  </van-radio-group>
+</van-cell-group>
 <van-cell-group title="审批意见">
   <van-cell>
     <textarea slot="title" style="height:200px;font-size:large;" auto-focus value="{{comment}}" placeholder="请填写" />
