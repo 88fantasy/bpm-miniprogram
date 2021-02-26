@@ -1,6 +1,6 @@
 // dashboard.ts
 import { wxRequest } from '../../utils/request';
-// import { CONSTANT_SESSIONDATA_KEY  } from '../../utils/constant';
+import { VERSION  } from '../../utils/constant';
 
 Page({
   app: getApp<BpmOption>(),
@@ -10,6 +10,9 @@ Page({
     uaccount: "工号",
     catelogs:[],
     changeLogs: [{
+      text: '支持企业微信',
+      desc: '2021-2-26',
+    },{
       text: 'OA审批操作支持选择节点',
       desc: '2020-10-11',
     },{
@@ -22,6 +25,7 @@ Page({
       text: '初始版本上线',
       desc: '2020-10-03',
     }],
+    version: VERSION,
   },
 
   onLogout() {

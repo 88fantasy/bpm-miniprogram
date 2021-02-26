@@ -1,25 +1,30 @@
 <!--index.wxml-->
 <view class="container" style="padding: 0px;">
   <image style="width:100%;" mode="widthFix" src="/images/login.png" />
-  <view class="page-section">
-    <view class="center" style="flex-direction:column;justify-content: center;">
-      <text style="color:red;">请先绑定用户信息</text>
+  <view wx:if="{{!isCom}}">
+    <view class="page-section">
+      <view class="center" style="flex-direction:column;justify-content: center;">
+        <text style="color:red;">请先绑定用户信息</text>
+      </view>
+    </view>
+    <view style="flex-direction:column;justify-content: center;">
+      <mp-form id="form" rules="{{rules}}" models="{{formData}}">
+        <mp-cells>
+          <mp-cell prop="user" title="帐号">
+            <input bindinput="formInputChange" data-field="user" class="weui-input" placeholder="" />
+          </mp-cell>
+          <mp-cell prop="pwd" title="密码">
+            <input bindinput="formInputChange" data-field="pwd" class="weui-input" placeholder="" />
+          </mp-cell>
+        </mp-cells>
+      </mp-form>
+      <button type="primary" open-type="getUserInfo" bindgetuserinfo="getUserInfo">授权绑定</button>
+      <!-- <text class="center">或</text>
+        <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">通过手机号登录</button> -->
     </view>
   </view>
-  <view style="flex-direction:column;justify-content: center;">
-    <mp-form id="form" rules="{{rules}}" models="{{formData}}">
-      <mp-cells>
-        <mp-cell prop="user" title="帐号">
-          <input bindinput="formInputChange" data-field="user" class="weui-input" placeholder="" />
-        </mp-cell>
-        <mp-cell prop="pwd" title="密码">
-          <input bindinput="formInputChange" data-field="pwd" class="weui-input" placeholder="" />
-        </mp-cell>
-      </mp-cells>
-    </mp-form>
-    <button type="primary" open-type="getUserInfo" bindgetuserinfo="getUserInfo">授权绑定</button>
-    <!-- <text class="center">或</text>
-      <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">通过手机号登录</button> -->
+  <view wx:else>
+    <van-empty image="network" description="企业微信登录中" />
   </view>
   <van-overlay show="{{msgShow}}">
     <mp-msg type="error" title="登录失败">

@@ -10,7 +10,7 @@
     <text class="userinfo-nickname">{{userInfo.nickName}}</text>
     <view>{{name}}({{uaccount}})</view>
   </view>
-    <text>更新日志:</text>
+    <text>当前版本 {{version}} </text>
     <van-steps
       steps="{{ changeLogs }}"
       direction="vertical"
