@@ -56,39 +56,43 @@ interface BpmOption {
   getComSessionCache: () => ComSessionData | undefined;
 }
 
-interface CommonOperationRequest {
+type CommonOperationRequest = {
   token?: string;
   approvalId: string;
   comment: string;
 }
 
-interface AssOperationRequest extends CommonOperationRequest {
+type AssOperationRequest = CommonOperationRequest & {
   categoryid: string;
 }
 
-interface ApproveRequest extends AssOperationRequest{
+type ApproveRequest = AssOperationRequest & {
   nextNode?: string;
   nextApprovalStaff?: string;
 }
 
-interface StopRequest extends AssOperationRequest{
+type StopRequest = AssOperationRequest & {
 
 }
 
-interface RejectRequest extends AssOperationRequest {
+type RejectRequest = AssOperationRequest & {
   rejectNode?: string;
 }
 
-interface SignRequest extends CommonOperationRequest{
+type SignRequest = CommonOperationRequest & {
 
 }
 
-interface AbolishRequest extends CommonOperationRequest{
+type AbolishRequest = CommonOperationRequest & {
 
 }
 
-interface ReplyRequest extends CommonOperationRequest{
+type ReplyRequest = CommonOperationRequest & {
 
+}
+
+type SendRequest = AssOperationRequest & {
+  staff: string;
 }
 
 type WechatMiniprogramCommonResult = {
@@ -97,3 +101,32 @@ type WechatMiniprogramCommonResult = {
 }
 
 type WechatMiniprogramComCode2SessionResult = WechatMiniprogramCommonResult & ComSessionData; 
+
+type OperatePageData = {
+  comment: string;
+  oper: string;
+  node: string;
+  rowData: {
+    id: string;
+    categoryid: string;
+    isNeedApprover: number;
+  },
+  msgShow: boolean;
+  msgInfo: {
+    type: string;
+    title: string;
+    desc: string;
+  },
+  toAccount: AccountInfo[],
+  isCom: boolean;
+};
+
+type OperatePageMethod = {
+  app: any;
+  onAppendComment: (e:any) => void;
+};
+
+type OperatePageChannel = {
+  rowData: any; 
+  oper: string;
+};

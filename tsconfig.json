@@ -20,7 +20,8 @@
     "strictPropertyInitialization": true,
     "lib": ["esnext"],
     "typeRoots": [
-      "./typings"
+      "./typings",
+      // "./node_modules/miniprogram-api-typings/types"
     ],
     "baseUrl": ".",
     "paths": {

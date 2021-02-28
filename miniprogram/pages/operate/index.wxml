@@ -1,5 +1,5 @@
 <!--miniprogram/pages/operate/index.wxml-->
-<van-notice-bar
+<van-notice-bar wx:if="{{!isCom}}"
   left-icon="volume-o"
   text="暂时尚不支持选人审批,请期待"
 />
@@ -17,13 +17,8 @@
     </van-cell>
   </van-radio-group>
 </van-cell-group>
-<van-cell-group wx:if="{{oper === 'send' && isCom && rowData  }}" title="选择人员">
-  <van-radio-group value="{{ node }}" bind:change="onNodeChange">
-    <van-cell wx:for="{{rowData.recjectNode}}" wx:key="radio" title="{{item.name}}" clickable data-name="{{item.id}}" bind:click="onRadioClick">
-      <van-radio slot="right-icon"  name="{{item.id}}" checked-color="#07c160"></van-radio>
-    </van-cell>
-  </van-radio-group>
-</van-cell-group>
+<van-cell wx:if="{{(oper === 'send' || oper === 'communicate' )&& rowData  }}" title="请选择人员" is-link bind:click="onAccountClick" />
+<van-cell wx:for="{{toAccount}}" title="{{item.accountName}}" value="{{item.uaccount}}" />
 <van-cell-group title="审批意见">
   <van-cell>
     <textarea slot="title" style="height:200px;font-size:large;" auto-focus value="{{comment}}" placeholder="请填写" />
@@ -45,6 +40,8 @@
     <van-button slot="title" wx:if="{{oper === 'approve'}}" type="primary" icon="passed" block bind:click="onApproveClick" >提交</van-button>
     <van-button slot="title" wx:if="{{oper === 'reject'}}" type="warning" icon="warning-o" block >驳回</van-button>
     <van-button slot="title" wx:if="{{oper === 'stop'}}" type="danger" icon="close" block bind:click="onStopClick" >废弃</van-button>
+    <van-button slot="title" wx:if="{{oper === 'send'}}" type="default" icon="share-o" block bind:click="onSendClick" >转发</van-button>
+    <van-button slot="title" wx:if="{{oper === 'communicate'}}" type="default" icon="chat-o" block bind:click="onCommunicateClick" >沟通</van-button>
     <van-button slot="title" wx:if="{{oper === 'sign'}}" type="default" icon="close" block bind:click="onSignClick" >签字</van-button>
     <van-button slot="title" wx:if="{{oper === 'abolish'}}" type="default" icon="close" block bind:click="onAbolishClick" >取消沟通</van-button>
     <van-button slot="title" wx:if="{{oper === 'reply'}}" type="default" icon="close" block bind:click="onReplyClick" >回覆沟通</van-button>

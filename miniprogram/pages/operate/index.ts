@@ -1,6 +1,6 @@
 
 // import { wxRequest } from '../../../utils/request';
-import { approve, stop, reject, abolish, reply, sign } from '../../services/assapi';
+import { approve, stop, reject, abolish, reply, sign, communicate, send, } from '../../services/assapi';
 
 Page({
   app: getApp<BpmOption>(),
@@ -21,7 +21,9 @@ Page({
       type: '',
       title: '',
       desc: '',
-    }
+    },
+    toAccount: [] as AccountInfo[],
+    isCom: getApp<BpmOption>().globalData.isCom,
   },
 
   onAppendComment(e: any) {
@@ -44,6 +46,12 @@ Page({
     });
   },
 
+  onAccountChange(event: any) {
+    this.setData({
+      toAccount: event.detail,
+    });
+  },
+
   onRadioClick(event: any) {
     const { name } = event.currentTarget.dataset;
     this.setData({
@@ -51,14 +59,47 @@ Page({
     });
   },
 
+  onAccountClick(_event: any) {
+    const that = this;
+    const { app } = that;
+    if (app.globalData.isCom) {
+      const accountList: AccountInfo[] = that.data.toAccount;
+      const selectedList = accountList.map(account => account.uaccount);
+      wx.qy.selectEnterpriseContact({
+        fromDepartmentId: -1,
+        mode: "single",
+        type: ["user"],
+        selectedUserIds: selectedList,
+        success: function (res: any) {
+          const newList: AccountInfo[] = [];
+          var selectedUserList = res.result.userList; // 已选的成员列表
+          for (var i = 0; i < selectedUserList.length; i++) {
+            const user = selectedUserList[i];
+            const userId = user.id; // 已选的单个成员ID
+            const userName = user.name;// 已选的单个成员名称
+            newList.push({
+              uaccount: userId,
+              accountName: userName,
+            });
+          }
+          that.setData({
+            toAccount: newList,
+          })
+        }
+      });
+    }
+  },
 
+  /**
+   * 通过(同意)
+   */
   onApproveClick() {
     const that = this;
     // const { rowData, comment, oper } = that.data;
-    const { rowData, comment, node} = that.data
+    const { rowData, comment, node, isCom, toAccount, } = that.data
 
     if (rowData) {
-      if(rowData.isNeedApprover === 1) {
+      if (rowData.isNeedApprover === 1 && !isCom) {
         that.operateFail({
           message: '暂时不支持选人',
         });
@@ -69,9 +110,14 @@ Page({
           categoryid: rowData.categoryid,
           comment: `${comment} (来自:微信小程序)`,
         };
-        if(node && node !== '') {
+        if (node && node !== '') {
           Object.assign(request, {
             nextNode: node
+          });
+        }
+        if (toAccount.length > 0) {
+          Object.assign(request, {
+            nextApprovalUaccount: toAccount[0].uaccount,
           });
         }
         approve(request).then(that.operateSuccess)
@@ -80,9 +126,12 @@ Page({
     }
   },
 
+  /**
+   * 驳回(不同意)
+   */
   onRejectClick() {
     const that = this;
-    const { rowData, comment, node} = that.data;
+    const { rowData, comment, node } = that.data;
 
     if (rowData) {
       const request: RejectRequest = {
@@ -90,7 +139,7 @@ Page({
         categoryid: rowData.categoryid,
         comment: `${comment} (来自:微信小程序)`,
       };
-      if(node && node !== '') {
+      if (node && node !== '') {
         Object.assign(request, {
           rejectNode: node
         });
@@ -100,6 +149,9 @@ Page({
     }
   },
 
+  /**
+   * 废弃(中止)
+   */
   onStopClick() {
     const that = this;
     const { rowData, comment, } = that.data;
@@ -114,6 +166,59 @@ Page({
     }
   },
 
+  /**
+   * 转办
+   */
+  onSendClick() {
+    const that = this;
+    const { rowData, comment, toAccount, } = that.data;
+
+    if (toAccount.length === 0) {
+      that.operateFail({
+        message: '必须选择发送对象',
+      });
+    }
+
+    if (rowData) {
+      send({
+        approvalId: rowData.id,
+        categoryid: rowData.categoryid,
+        comment: `${comment} (来自:微信小程序)`,
+        staff: toAccount[0].uaccount || '',
+        // staff: '12485',
+      }).then(that.operateSuccess)
+        .catch(that.operateFail);
+    }
+  },
+
+  /**
+   * 沟通
+   */
+  onCommunicateClick() {
+    const that = this;
+    const { rowData, comment, toAccount, } = that.data;
+
+    if (toAccount.length === 0) {
+      that.operateFail({
+        message: '必须选择发送对象',
+      });
+    }
+
+    if (rowData) {
+      communicate({
+        approvalId: rowData.id,
+        categoryid: rowData.categoryid,
+        comment: `${comment} (来自:微信小程序)`,
+        staff: toAccount[0].uaccount || '',
+        // staff: '12485',
+      }).then(that.operateSuccess)
+        .catch(that.operateFail);
+    }
+  },
+
+  /**
+   * 签字
+   */
   onSignClick() {
     const that = this;
     const { rowData, comment, } = that.data;
@@ -126,7 +231,9 @@ Page({
         .catch(that.operateFail);
     }
   },
-
+  /**
+   * 取消沟通
+   */
   onAbolishClick() {
     const that = this;
     const { rowData, comment, } = that.data;
@@ -140,6 +247,9 @@ Page({
     }
   },
 
+  /**
+   * 回覆沟通
+   */
   onReplyClick() {
     const that = this;
     const { rowData, comment, } = that.data;
@@ -174,7 +284,7 @@ Page({
     }
   },
 
-  operateFail(res: any) {
+  operateFail(res: { message: string;}) {
     this.setData({
       msgShow: true,
       msgInfo: {
@@ -198,13 +308,13 @@ Page({
     const that = this;
     const eventChannel = this.getOpenerEventChannel();
     // 监听acceptDataFromOpenerPage事件，获取上一页面通过eventChannel传送到当前页面的数据
-    eventChannel.on('acceptDataFromOpenerPage', function (data) {
+    eventChannel.on('acceptDataFromOpenerPage', function (data: OperatePageChannel) {
       const { rowData, oper }: { rowData: any; oper: string; } = data;
-      let node ='';
-      if(oper === 'approve') {
+      let node = '';
+      if (oper === 'approve') {
         node = rowData && rowData.nextNode && rowData.nextNode.length > 0 ? rowData.nextNode[0].id : '';
       }
-      else if(oper === 'reject') {
+      else if (oper === 'reject') {
         node = rowData && rowData.rejectNode && rowData.rejectNode.length > 0 ? rowData.rejectNode[0].id : '';
       }
       that.setData({

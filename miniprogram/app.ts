@@ -84,17 +84,14 @@ App<BpmOption>({
     }
   },
 
-  async onLaunch() {
+  onLaunch() {
     const that = this;
 
     /**
      * 判断当前运行环境
      */
-    await wx.getSystemInfo({
-      success(res) {
-        that.globalData.isCom = res.environment === 'wxwork';
-      }
-    });
+    const res = wx.getSystemInfoSync();
+    that.globalData.isCom = res.environment === 'wxwork';
 
     wx.getSetting({
       success(res) {

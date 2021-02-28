@@ -1,7 +1,6 @@
 // index.ts
 import { wxRequest } from '../../utils/request';
 import { CONSTANT_SESSIONDATA_KEY } from '../../utils/constant';
-import Toast from '../../miniprogram_npm/@vant/weapp/toast/toast';
 
 
 const WXBizDataCrypt = require('../../utils/RdWXBizDataCrypt');
