@@ -95,13 +95,12 @@ Page({
    */
   onApproveClick() {
     const that = this;
-    // const { rowData, comment, oper } = that.data;
     const { rowData, comment, node, isCom, toAccount, } = that.data
 
     if (rowData) {
-      if (rowData.isNeedApprover === 1 && !isCom) {
+      if (rowData.isNeedApprover === 1 && toAccount.length === 0) {
         that.operateFail({
-          message: '暂时不支持选人',
+          message: '必须选择发送对象',
         });
       }
       else {

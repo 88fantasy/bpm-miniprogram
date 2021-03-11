@@ -17,7 +17,7 @@
     </van-cell>
   </van-radio-group>
 </van-cell-group>
-<van-cell wx:if="{{(oper === 'send' || oper === 'communicate' )&& rowData  }}" title="请选择人员" is-link bind:click="onAccountClick" />
+<van-cell wx:if="{{rowData && (oper === 'send' || oper === 'communicate' || (oper === 'approve' && rowData.isNeedApprover === 1))}}" title="请选择人员" is-link bind:click="onAccountClick" />
 <van-cell wx:for="{{toAccount}}" title="{{item.accountName}}" value="{{item.uaccount}}" />
 <van-cell-group title="审批意见">
   <van-cell>
