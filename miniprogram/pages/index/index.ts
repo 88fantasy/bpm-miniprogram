@@ -117,7 +117,7 @@ Page({
       url: "/login",
       method: 'POST',
       data: {
-        username: user,
+        username: '10972',
         password: pwd
       }
     }).then((res) => {

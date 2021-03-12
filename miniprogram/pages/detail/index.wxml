@@ -1,9 +1,4 @@
 <!--pages/detail/index.wxml-->
-<view wx:if="{{detail.content && detail.content.length > 0}}">
-  <van-divider contentPosition="center" customStyle="color: #1989fa; border-color: #1989fa; font-size: 18px;">
-    详情
-  </van-divider>
-</view>
 <view wx:for="{{detail.content}}" wx:key="content">
   <van-cell wx:if="{{item.validatatypecfg !== 'HTML'}}" title="{{item.dataname}}" value="{{item.datavalue}}" />
   <rich-text wx:else nodes="{{item.datavalue}}" />
@@ -27,7 +22,7 @@
   </van-divider>
   <van-cell wx:for="{{detail.attachment}}" title="{{item.title}}"  wx:key="record" is-link  data-url="{{item.url}}" data-type="{{item.type}}" bind:click="onAttachmentClick"/>
 </view>
-<view wx:if="{{operation && operation.length > 0}}">
+<view wx:if="{{operation && operation.length > 0}}" class="footer-bar">
   <van-row>
     <van-col wx:for="{{operation}}" wx:key="index" span="{{24 / operation.length}}">
       <van-button block type="{{item.type}}" bind:click="onOperateClick" data-operate="{{item.oper}}">{{item.opername}}</van-button>

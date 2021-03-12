@@ -10,6 +10,9 @@ Page({
     uaccount: "工号",
     catelogs:[],
     changeLogs: [{
+      text: '企业微信内支持选人操作',
+      desc: '2021-3-12',
+    },{
       text: '支持企业微信',
       desc: '2021-2-26',
     },{

@@ -95,7 +95,7 @@ Page({
    */
   onApproveClick() {
     const that = this;
-    const { rowData, comment, node, isCom, toAccount, } = that.data
+    const { rowData, comment, node, toAccount, } = that.data
 
     if (rowData) {
       if (rowData.isNeedApprover === 1 && toAccount.length === 0) {
