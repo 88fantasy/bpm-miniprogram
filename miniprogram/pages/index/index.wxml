@@ -14,7 +14,7 @@
             <input bindinput="formInputChange" data-field="user" class="weui-input" placeholder="" />
           </mp-cell>
           <mp-cell prop="pwd" title="密码">
-            <input bindinput="formInputChange" data-field="pwd" class="weui-input" placeholder="" />
+            <input bindinput="formInputChange" data-field="pwd" password class="weui-input" placeholder="" />
           </mp-cell>
         </mp-cells>
       </mp-form>

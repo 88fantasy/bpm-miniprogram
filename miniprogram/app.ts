@@ -12,6 +12,7 @@ App<BpmOption>({
     agentId: 1000012,
     hasUserInfo: false,
     isCom: false,
+    statusBarHeight: 44,
   },
 
   setAccountInfo(uaccount: string, accessToken: string) {
@@ -92,6 +93,7 @@ App<BpmOption>({
      */
     const res = wx.getSystemInfoSync();
     that.globalData.isCom = res.environment === 'wxwork';
+    that.globalData.statusBarHeight = res.statusBarHeight;
 
     const updateManager = wx.getUpdateManager()
 

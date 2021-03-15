@@ -48,6 +48,10 @@ interface BpmOption {
      * 是否企业微信
      */
     isCom: boolean;
+    /**
+     * 状态栏高度
+     */
+    statusBarHeight: number;
   }
   setAccountInfo: (uaccount: string, accessToken: string) => void;
   userInfoReadyCallback?: WechatMiniprogram.GetUserInfoSuccessCallback;

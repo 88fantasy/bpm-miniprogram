@@ -6,7 +6,8 @@ Page({
   app: getApp<BpmOption>(),
   data: {
     error: '',
-    assList: []
+    assList: [],
+    statusBarHeight: getApp<BpmOption>().globalData.statusBarHeight,
   },
 
   setError(errMsg: string) {
