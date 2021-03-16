@@ -5,7 +5,7 @@
   },
   "miniprogramRoot": "miniprogram/",
   "compileType": "miniprogram",
-  "libVersion": "2.14.1",
+  "libVersion": "2.16.0",
   "projectname": "bpmCenter",
   "scripts": {
     "beforeCompile": "npm run tsc",
@@ -47,7 +47,7 @@
     "bundle": false,
     "useApiHostProcess": true
   },
-  "simulatorType": "wechat",
+  "simulatorType": "qywx_simulator_plugin",
   "simulatorPluginLibVersion": {
     "qywx_simulator_plugin": "2.10.1"
   },

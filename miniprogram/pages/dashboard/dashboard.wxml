@@ -10,7 +10,7 @@
     <text class="userinfo-nickname">{{userInfo.nickName}}</text>
     <view>{{name}}({{uaccount}})</view>
   </view>
-    <text>当前版本 {{version}} </text>
+    <text>当前版本 {{version}} </text><van-tag wx:if="{{hasUpdate}}" round type="success">有新版本</van-tag>
     <van-steps
       steps="{{ changeLogs }}"
       direction="vertical"

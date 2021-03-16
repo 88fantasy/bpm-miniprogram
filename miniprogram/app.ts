@@ -1,6 +1,7 @@
 // app.ts
 import { wxRequest } from './utils/request';
 import { CONSTANT_SESSIONDATA_KEY } from './utils/constant';
+import Notify from 'miniprogram_npm/@vant/weapp/notify/notify';
 
 App<BpmOption>({
   globalData: {
@@ -85,27 +86,15 @@ App<BpmOption>({
     }
   },
 
-  onLaunch() {
-    const that = this;
-
-    /**
-     * 判断当前运行环境
-     */
-    const res = wx.getSystemInfoSync();
-    that.globalData.isCom = res.environment === 'wxwork';
-    that.globalData.statusBarHeight = res.statusBarHeight;
-
+  checkUpdate(callback) {
     const updateManager = wx.getUpdateManager()
 
     updateManager.onCheckForUpdate(function (res) {
       // 请求完新版本信息的回调
-     if(res.hasUpdate) {
-       wx.showToast({
-         title: '检测到新版本,将进行后台更新',
-         icon:'loading',
-         duration: 1000
-       })
-     }
+
+      if (callback) {
+        callback(res);
+      }
     })
 
     updateManager.onUpdateReady(function () {
@@ -124,6 +113,30 @@ App<BpmOption>({
     updateManager.onUpdateFailed(function () {
       // 新版本下载失败
     })
+  },
+
+  onLaunch() {
+    const that = this;
+
+    /**
+     * 判断当前运行环境
+     */
+    const res = wx.getSystemInfoSync();
+    that.globalData.isCom = res.environment === 'wxwork';
+    that.globalData.statusBarHeight = res.statusBarHeight;
+
+    that.checkUpdate(function (res) {
+      // 请求完新版本信息的回调
+      if (res.hasUpdate) {
+        Notify({
+          safeAreaInsetTop: true,
+          type: 'success',
+          message: '检测到新版本,将进行后台更新',
+          duration: 1500,
+        });
+      }
+    })
+
 
     wx.getSetting({
       success(res) {

@@ -58,6 +58,7 @@ interface BpmOption {
   wxLogin: () => void;
   getSessionCache: () => SessionData | undefined;
   getComSessionCache: () => ComSessionData | undefined;
+  checkUpdate:(callback?: (WechatMiniprogram.OnCheckForUpdateCallback)) => void;
 }
 
 type CommonOperationRequest = {
