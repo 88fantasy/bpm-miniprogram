@@ -1,7 +1,7 @@
 // app.ts
 import { wxRequest } from './utils/request';
 import { CONSTANT_SESSIONDATA_KEY } from './utils/constant';
-import Notify from 'miniprogram_npm/@vant/weapp/notify/notify';
+import Notify from './miniprogram_npm/@vant/weapp/notify/notify';
 
 App<BpmOption>({
   globalData: {
