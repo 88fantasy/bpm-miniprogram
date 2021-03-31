@@ -16,9 +16,12 @@
         bind:click="onCellClick" data-id="{{item.id}}"  custom-class="{{item.approvable && !item.loading ? 'approve-border' : '' }} {{item.stopable && !item.loading ? 'stop-border' : '' }}" >
         <view slot="label">
           <van-tag mark type="primary">{{item.systemname}}</van-tag>
+          <text decode="{{true}}">&ensp;&ensp;&ensp;&ensp;&ensp;</text>
+          <van-tag mark >{{item.cremanname}}</van-tag>
         </view>
         <view slot="label">
           <van-tag mark type="primary">{{item.categoryname}}</van-tag>
+          <text decode="{{true}}">&ensp;&ensp;&ensp;&ensp;&ensp;</text>
           <van-tag mark>{{item.createdTime}}</van-tag>
         </view>
         <view wx:if="{{item.error}}" slot="label">
