@@ -18,7 +18,6 @@
     "removeComments": true,
     "pretty": true,
     "strictPropertyInitialization": true,
-    "noEmit": true,
     "lib": ["esnext"],
     "typeRoots": [
       "./typings",

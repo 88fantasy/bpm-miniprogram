@@ -1,7 +1,6 @@
 // app.ts
 import { wxRequest } from './utils/request';
 import { CONSTANT_SESSIONDATA_KEY } from './utils/constant';
-import Notify from './miniprogram_npm/@vant/weapp/notify/notify';
 
 App<BpmOption>({
   globalData: {
@@ -32,7 +31,7 @@ App<BpmOption>({
       success: res => {
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
         wxRequest({
-          url: "https://wechat-api.gzmpc.com/v1/mp/code2Session",
+          url: "https://develop.gzmpc.com/api/wechat/v1/mp/code2Session",
           method: 'POST',
           data: {
             appid: appId,
@@ -40,13 +39,13 @@ App<BpmOption>({
           }
         }).then((res) => {
           if (res.statusCode == 200) {
-            const data: any = res.data;
-            const sessionData: SessionData = { ...data };
-
-            that.globalData.sessionData = sessionData;
-
-            //保存到缓存中
-            wx.setStorageSync(CONSTANT_SESSIONDATA_KEY, sessionData);
+            const respo: ApiResponseData<SessionData> = res.data as ApiResponseData<SessionData>;
+            if(respo.status) {
+              const sessionData: SessionData = respo.data;
+              that.globalData.sessionData = sessionData;
+              //保存到缓存中
+              wx.setStorageSync(CONSTANT_SESSIONDATA_KEY, sessionData);
+            }
           }
           else {
 
@@ -91,7 +90,6 @@ App<BpmOption>({
 
     updateManager.onCheckForUpdate(function (res) {
       // 请求完新版本信息的回调
-
       if (callback) {
         callback(res);
       }
@@ -128,10 +126,10 @@ App<BpmOption>({
     that.checkUpdate(function (res) {
       // 请求完新版本信息的回调
       if (res.hasUpdate) {
-        Notify({
-          safeAreaInsetTop: true,
-          type: 'success',
-          message: '检测到新版本,将进行后台更新',
+        wx.showToast({
+          mask: true,
+          icon: 'success',
+          title: '检测到新版本,将进行后台更新',
           duration: 1500,
         });
       }

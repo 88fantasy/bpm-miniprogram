@@ -1,17 +1,22 @@
 /// <reference path="./types/index.d.ts" />
-interface AccountInfo {
+type AccountInfo = {
   accountName?: string;
   uaccount?: string;
   token?: string;
 }
 
-interface SessionData {
+type ErrorInfo = {
+  errcode: number;
+  errmsg?: string;
+}
+
+type SessionData = ErrorInfo & {
   openid: string;
   sessionKey: string;
   unionid?: string;
 }
 
-type ComSessionData = {
+type ComSessionData = ErrorInfo & {
   /**
    * 企业Id
    */
@@ -22,7 +27,7 @@ type ComSessionData = {
   userid: string;
 }
 
-interface BpmOption {
+type BpmOption = {
   globalData: {
     /**
      * 微信用户信息
@@ -58,7 +63,7 @@ interface BpmOption {
   wxLogin: () => void;
   getSessionCache: () => SessionData | undefined;
   getComSessionCache: () => ComSessionData | undefined;
-  checkUpdate:(callback?: (WechatMiniprogram.OnCheckForUpdateCallback)) => void;
+  checkUpdate: (callback?: (WechatMiniprogram.OnCheckForUpdateCallback)) => void;
 }
 
 type CommonOperationRequest = {
@@ -105,7 +110,7 @@ type WechatMiniprogramCommonResult = {
   errmsg: string;
 }
 
-type WechatMiniprogramComCode2SessionResult = WechatMiniprogramCommonResult & ComSessionData; 
+type WechatMiniprogramComCode2SessionResult = WechatMiniprogramCommonResult & ComSessionData;
 
 type OperatePageData = {
   comment: string;
@@ -128,10 +133,37 @@ type OperatePageData = {
 
 type OperatePageMethod = {
   app: any;
-  onAppendComment: (e:any) => void;
+  onAppendComment: (e: any) => void;
 };
 
 type OperatePageChannel = {
-  rowData: any; 
+  rowData: any;
   oper: string;
 };
+
+type ApiResponseData<T> = {
+  code: number;
+  status: boolean;
+  message?: string;
+  data: T;
+}
+
+type PaginationPage = {
+  current?: number;
+  pageSize?: number;
+};
+
+type PaginationPager = PaginationPage & {
+  size: number;
+  total: number;
+};
+
+type ApiResponsePage<T> = {
+  code: number;
+    status: boolean;
+    message?: string;
+    data: {
+        list: T[];
+        pager: PaginationPager;
+    };
+}

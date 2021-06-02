@@ -76,7 +76,7 @@ Page({
         if (res.code) {
           //发起网络请求
           wxRequest({
-            url: "https://wechat-api.gzmpc.com/v1/com/code2Session",
+            url: "https://develop.gzmpc.com/api/wechat/v1/com/code2Session",
             method: 'POST',
             data: {
               agentId: app.globalData.agentId,
@@ -84,10 +84,9 @@ Page({
             }
           }).then((res) => {
             if (res.statusCode == 200) {
-              const data: any = res.data;
-              const result: WechatMiniprogramComCode2SessionResult = data;
-              if(result.errcode === 0) {
-                const sessionData: ComSessionData = { ...result }; 
+              const result = res.data as ApiResponseData<WechatMiniprogramComCode2SessionResult>;
+              if(result && result.status && result.data.errcode === 0) {
+                const sessionData: ComSessionData = { ...result.data }; 
                 app.globalData.comSessionData = sessionData;
 
                 //保存到缓存中
@@ -130,7 +129,7 @@ Page({
           const sessionData = app.getSessionCache();
           if(sessionData) {
             wxRequest({
-              url: "https://wechat-api.gzmpc.com/v1/wechat/bindOpenId",
+              url: "https://develop.gzmpc.com/api/wechat/v1/wechat/bindOpenId",
               method: 'POST',
               data: {
                 uaccount: user,
@@ -162,12 +161,12 @@ Page({
       const sessionData = app.getSessionCache();
       if(sessionData && !auto) {
         wxRequest({
-          url: `https://wechat-api.gzmpc.com/v1/wechat/getUaccountByOpenId/${sessionData.openid}`,
+          url: `https://develop.gzmpc.com/api/wechat/v1/wechat/getUaccountByOpenId/${sessionData.openid}`,
         }).then((res) => {
           if(res.statusCode == 200) {
-            const data:any  = res.data;
-            if(data && data.errcode == 0) {
-              that.login(data.uaccount, "mima");
+            const data  = res.data as ApiResponseData<string>;
+            if(data && data.status) {
+              that.login(data.data, "mima");
             }
           }
         });
