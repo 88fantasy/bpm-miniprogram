@@ -1,5 +1,7 @@
 {
   "navigationStyle": "custom",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark",
   "usingComponents": {
     "van-swipe-cell": "/miniprogram_npm/@vant/weapp/swipe-cell/index",
     "van-card": "/miniprogram_npm/@vant/weapp/card/index",
@@ -8,6 +10,9 @@
     "van-notice-bar": "/miniprogram_npm/@vant/weapp/notice-bar/index",
     "van-empty": "/miniprogram_npm/@vant/weapp/empty/index",
     "van-nav-bar": "/miniprogram_npm/@vant/weapp/nav-bar/index",
-    "van-icon": "/miniprogram_npm/@vant/weapp/icon/index"
+    "van-icon": "/miniprogram_npm/@vant/weapp/icon/index",
+    "van-checkbox": "/miniprogram_npm/@vant/weapp/checkbox/index",
+    "van-checkbox-group": "/miniprogram_npm/@vant/weapp/checkbox-group/index",
+    "van-image": "/miniprogram_npm/@vant/weapp/image/index"
   }
 }

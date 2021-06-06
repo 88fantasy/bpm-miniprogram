@@ -1,0 +1,36 @@
+
+<view
+  class="scroll"
+  scroll-y
+  style="min-height: {{pageHeight}}; position: {{contentFlow}}; top: {{marginTop + 'rpx'}}; overflow: {{overflow}};'background-color: {{backgroundColor}}'"
+  enable-back-to-top="{{true}}"
+  bindtouchmove="movePull" 
+  bindtouchstart="startPull" 
+  bindtouchend="endPull" >
+  <view 
+    class="refresh__wrap real__wrap {{springbacking ? 'return__wrap' : ''}}" 
+    style="top: {{(scrollTop + trunMarginTop) + 'px'}}">
+    <view class="refresh__center">
+      <view class="refresh__icon {{refreshText === '松开刷新' ? 'rotate' : ''}}" >
+        <image src="{{icon}}" />
+      </view>
+      <view class="scroll__loading" wx:if="{{refreshing}}"></view>
+      <view class="tips" wx:else>{{refreshText}}</view>
+      <view class="times">最后更新：{{refreshTime}}</view>
+    </view>
+  </view>
+  <scroll-view 
+    class="scroll__content {{springbacking ? 'return__content' : ''}}" 
+    style="min-height: {{contentHeight}};top: {{scrollTop + 'px'}}">
+    <view class="refresh__wrap"></view>
+    <view class="content">
+      <slot />
+      <view class="footer__line" wx:if="{{recycleList.length}}">
+        <view class="scroll__loading" wx:if="{{bottomLoadingShow}}"></view>
+        <text class="text {{bottomLoadingShow ? 'notline' : ''}}">{{lineText}}</text>
+      </view>
+    </view>
+	<view style="height: {{tabBarHeight + 'rpx'}}"></view>
+  </scroll-view>
+  <slot name="no-data" />
+</view>

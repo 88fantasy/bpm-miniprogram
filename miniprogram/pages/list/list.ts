@@ -8,6 +8,8 @@ Page({
     error: '',
     assList: [],
     statusBarHeight: getApp<BpmOption>().globalData.statusBarHeight,
+    batch: false,
+    checkedList: [],
   },
 
   setError(errMsg: string) {
@@ -41,43 +43,50 @@ Page({
 
   onCellClick(e: any) {
     const that = this;
-    const { dataset: { id } } = e.target;
+    const { batch, } = that.data;
+    const { dataset: { id, index } } = e.target;
     const row = this.searchRow(id);
-    if(row) {
-      wx.navigateTo({
-        url: '/pages/detail/index',
-        events: {
-          // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
-          detailBack: function(data: {
-            id: string;
-            promise: Promise<WechatMiniprogram.RequestSuccessCallbackResult>;
-          }) {
-            const { id, promise } = data;
-            that.updateRow(data.id, {
-              loading: true,
-            });
-            promise.then((res: WechatMiniprogram.RequestSuccessCallbackResult) => {
-              that.onOperateSuccess(id,res);
-            }).catch((res: any) => {
-              that.onOperateFail(id,res);
-            });
+    if (row && !row.loading) {
+      if (batch) {
+        const checkbox = that.selectComponent(`.checkboxes-${index}`);
+        checkbox.toggle();
+      }
+      else {
+        wx.navigateTo({
+          url: '/pages/detail/index',
+          events: {
+            // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+            detailBack: function (data: {
+              id: string;
+              promise: Promise<WechatMiniprogram.RequestSuccessCallbackResult>;
+            }) {
+              const { id, promise } = data;
+              that.updateRow(data.id, {
+                loading: true,
+              });
+              promise.then((res: WechatMiniprogram.RequestSuccessCallbackResult) => {
+                that.onOperateSuccess(id, res);
+              }).catch((res: any) => {
+                that.onOperateFail(id, res);
+              });
+            }
+          },
+          success: function (res) {
+            // 通过eventChannel向被打开页面传送数据
+            res.eventChannel.emit('acceptDataFromOpenerPage', {
+              approvalid: id,
+              rowData: row,
+            })
           }
-        },
-        success: function (res) {
-          // 通过eventChannel向被打开页面传送数据
-          res.eventChannel.emit('acceptDataFromOpenerPage', {
-            approvalid: id,
-            rowData: row,
-          })
-        }
-      });
+        });
+      }
     }
   },
 
   onOperateSuccess(id: string, res: WechatMiniprogram.RequestSuccessCallbackResult) {
     const data: any = res.data;
-    if(res.statusCode === 200) {
-      if(data.status == 200) {
+    if (res.statusCode === 200) {
+      if (data.status == 200) {
         this.removeRow(id);
       }
       else {
@@ -116,15 +125,20 @@ Page({
         categoryid: row.categoryid,
         comment: '快速中止 (来自:微信小程序)',
       }).then((res) => {
-        that.onOperateSuccess(id,res);
+        that.onOperateSuccess(id, res);
       }).catch((res) => {
-        that.onOperateFail(id,res);
+        that.onOperateFail(id, res);
       });
     }
   },
 
   onApproveClick(e: any) {
     const { dataset: { id } } = e.target;
+    const that = this;
+    that.onApprove(id, false);
+  },
+
+  onApprove(id: string, batch: boolean) {
     const that = this;
     const row: any = that.searchRow(id);
 
@@ -135,16 +149,16 @@ Page({
       approve({
         approvalId: row.id,
         categoryid: row.categoryid,
-        comment: '快速同意 (来自:微信小程序)',
+        comment: `${batch?'批量':''}快速同意 (来自:微信小程序)`,
       }).then((res) => {
-        that.onOperateSuccess(id,res);
+        that.onOperateSuccess(id, res);
       }).catch((res) => {
-        that.onOperateFail(id,res);
+        that.onOperateFail(id, res);
       });
     }
   },
 
-  searchRow(id: string) {
+  searchRow(id: string): any | undefined {
     const { assList } = this.data;
     if (assList) {
       return assList.find((item: any) => item.id === id);
@@ -176,10 +190,39 @@ Page({
     })
   },
 
+  toBatch() {
+    this.setData({ batch: true, checkedList: [], });
+  },
+
+  onBatchSubmit() {
+    const that = this;
+    const { checkedList, } = that.data;
+
+    if(checkedList.length > 0) {
+      checkedList.forEach((value: string)=> {
+        that.onApprove(value, true);
+      });
+    }
+    that.onBatchCancel();
+  },
+
+  onBatchCancel() {
+    this.setData({
+      batch: false,
+      checkedList: [],
+    })
+  },
+
+  onCheckChange(event: any) {
+    this.setData({
+      checkedList: event.detail
+    });
+  },
+
   onLoad() {
     // const { app } = this;
     // this.onRefreshData();
-
+    wx.stopPullDownRefresh();
   },
 
   onShow() {

@@ -1,0 +1,118 @@
+
+page {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+}
+page, view, text, input, button {
+  /*box-sizing: border-box;*/
+}
+.scroll {
+  width: 100%;
+  position: relative;
+  left: 0;
+}
+.scroll__content {
+  position: absolute;
+  width: 100%;
+  min-height: 120%;
+  transition: all 0s linear;
+}
+.scroll__content.return__content {
+  transition: all .4s linear;
+}
+.refresh__wrap {
+  height: 80px;
+  width: 100%;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+  padding-top: 30px;
+}
+.refresh__wrap.real__wrap {
+  position: fixed;
+  transition: all 0s linear;
+  top: 0;
+  left: 0;
+}
+.refresh__wrap.real__wrap.return__wrap {
+  transition: all .4s linear;
+}
+.refresh__center {
+  position: relative;
+  height: 100%;
+  width: 500rpx;
+  margin: 0 auto;
+}
+.refresh__icon {
+  position: absolute;
+  top: 5rpx;
+  left: -20px;
+  margin: auto auto;
+  transition: all .4s linear;
+  transform: rotate(0deg);
+}
+.refresh__icon.rotate {
+  transform: rotate(180deg);
+}
+.refresh__icon image {
+  width: 48rpx;
+  height: 48rpx;
+}
+.refresh__wrap .tips {
+  line-height: 20px;
+}
+.refresh__wrap .times {
+  line-height: 30px;
+}
+.footer__line {
+  width: 100%;
+  text-align: center;
+  height: 120rpx;
+  line-height: 120rpx;
+}
+.footer__line .text {
+  position: relative;
+  display: inline-block;
+  color: #999;
+  font-size: 24rpx;
+  padding: 0 23rpx;
+  height: 120rpx;
+  line-height: 120rpx;
+}
+.footer__line .text:before,
+.footer__line .text:after {
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  left: -100rpx;
+  content: '';
+  width: 100rpx;
+  height: 2rpx;
+  background-color: #ccc;
+}
+.footer__line .text.notline:before,
+.footer__line .text.notline:after {
+  display: none;
+}
+.footer__line .text:after{
+  left: 100%;
+}
+.scroll__loading {
+  margin: 0 10rpx;
+  width: 40rpx;
+  height: 40rpx;
+  line-height: 120rpx;
+  display: inline-block;
+  vertical-align: middle;
+  background: transparent url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGgxMDB2MTAwSDB6Ii8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjRTlFOUU5IiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTMwKSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iIzk4OTY5NyIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgzMCAxMDUuOTggNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjOUI5OTlBIiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKDYwIDc1Ljk4IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0EzQTFBMiIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSg5MCA2NSA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNBQkE5QUEiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoMTIwIDU4LjY2IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0IyQjJCMiIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgxNTAgNTQuMDIgNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjQkFCOEI5IiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKDE4MCA1MCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNDMkMwQzEiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTE1MCA0NS45OCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNDQkNCQ0IiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTEyMCA0MS4zNCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNEMkQyRDIiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTkwIDM1IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0RBREFEQSIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgtNjAgMjQuMDIgNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjRTJFMkUyIiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKC0zMCAtNS45OCA2NSkiLz48L3N2Zz4=) no-repeat;
+  background-size: 100%;
+  animation: scrollLoading 1s steps(12, end) infinite;
+}
+@keyframes scrollLoading { 
+  0% { transform:rotate3d(0, 0, 1, 0deg ) }
+  100% { transform:rotate3d(0, 0, 1, 360deg ) }
+}

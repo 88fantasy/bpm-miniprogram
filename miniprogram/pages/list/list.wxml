@@ -5,34 +5,38 @@
   custom-style="height: 50px;"
   fixed
 >
-  <van-icon name="replay"  slot="left" bind:click="onRefreshData"  />
+  <van-button wx:if="{{!batch}}" icon="cluster-o" slot="left" custom-style="background: transparent; border: 0px;" size="small" bind:click="toBatch" >批量同意</van-button>
+  <van-button wx:if="{{batch}}" icon="success" slot="left" custom-style="background: transparent; border: 0px;" size="small" bind:click="onBatchSubmit" >提交</van-button>
+  <van-button wx:if="{{batch}}" icon="cross" slot="left" custom-style="background: transparent; border: 0px;" size="small" bind:click="onBatchCancel" >取消</van-button>
 </van-nav-bar>
 <scroll-view scroll-y style="height: 100%; margin-top: {{statusBarHeight+50}}px;">
-  <van-cell-group border="{{ true }}">
-    <van-swipe-cell  right-width="{{ item.approvable && !item.loading ? 65 : 0 }}" left-width="{{ item.stopable && !item.loading ? 65 : 0 }}" wx:for="{{assList}}" wx:key="index">
-      <van-button wx:if="{{item.stopable && !item.loading}}" type="danger" block slot="left" custom-style="height:100%;"
-        bind:click="onStopClick" data-id="{{item.id}}">中止</van-button>
-      <van-cell title="{{item.title}}"  use-label-slot size="large" clickable="{{item.clickable}}"
-        bind:click="onCellClick" data-id="{{item.id}}"  custom-class="{{item.approvable && !item.loading ? 'approve-border' : '' }} {{item.stopable && !item.loading ? 'stop-border' : '' }}" >
-        <view slot="label">
-          <van-tag mark type="primary">{{item.systemname}}</van-tag>
-          <text decode="{{true}}">&ensp;&ensp;</text>
-          <van-tag mark >{{item.cremanname}}</van-tag>
-        </view>
-        <view slot="label">
-          <van-tag mark type="primary">{{item.categoryname}}</van-tag>
-          <text decode="{{true}}">&ensp;&ensp;</text>
-          <van-tag mark>{{item.createdTime}}</van-tag>
-        </view>
-        <view wx:if="{{item.error}}" slot="label">
-          <van-notice-bar left-icon="question-o" text="{{item.error}}" />
-        </view>
-        <van-loading wx:if="{{item.loading}}" slot="right-icon" color="#1989fa" vertical>操作中</van-loading>
-      </van-cell>
-      <van-button wx:if="{{item.approvable && !item.loading}}" type="primary" block slot="right" custom-style="height:100%;"
-        bind:click="onApproveClick" data-id="{{item.id}}">通过</van-button>
-    </van-swipe-cell>
-
+  <van-cell-group border>
+    <van-checkbox-group value="{{ checkedList }}" bind:change="onCheckChange">
+      <van-swipe-cell right-width="{{ item.approvable && !item.loading ? 65 : 0 }}" left-width="{{ item.stopable && !item.loading ? 65 : 0 }}" wx:for="{{assList}}" wx:key="index" >
+        <van-button wx:if="{{item.stopable && !item.loading}}" type="danger" block slot="left" custom-style="height:100%;"
+          bind:click="onStopClick" data-id="{{item.id}}">中止</van-button>
+        <van-cell title="{{item.title}}"  use-label-slot size="large" clickable="{{item.clickable}}"
+          bind:click="onCellClick" data-id="{{item.id}}"  data-index="{{ index }}" custom-class="{{item.approvable && !item.loading ? 'approve-border' : '' }} {{item.stopable && !item.loading ? 'stop-border' : '' }}" >
+          <view slot="label">
+            <van-tag mark type="primary">{{item.systemname}}</van-tag>
+            <text decode="{{true}}">&ensp;&ensp;</text>
+            <van-tag mark >{{item.cremanname}}</van-tag>
+          </view>
+          <view slot="label">
+            <van-tag mark type="primary">{{item.categoryname}}</van-tag>
+            <text decode="{{true}}">&ensp;&ensp;</text>
+            <van-tag mark>{{item.createdTime}}</van-tag>
+          </view>
+          <view wx:if="{{item.error}}" slot="label">
+            <van-notice-bar left-icon="question-o" text="{{item.error}}" />
+          </view>
+          <van-loading wx:if="{{item.loading}}" slot="right-icon" color="#1989fa" vertical>操作中</van-loading>
+          <van-checkbox wx:if="{{ item.approvable && !item.loading && batch}}" name="{{item.id}}" class="checkboxes-{{index}}" slot="right-icon" />
+        </van-cell>
+        <van-button wx:if="{{item.approvable && !item.loading}}" type="primary" block slot="right" custom-style="height:100%;"
+          bind:click="onApproveClick" data-id="{{item.id}}">通过</van-button>
+      </van-swipe-cell>
+    </van-checkbox-group>
     <van-empty wx:if="{{!assList || assList.length == 0}}" image="network" description="已完成所有待办" >
       <van-button round type="danger" class="refresh-button" bind:click="onPullDownRefresh">
         刷新
