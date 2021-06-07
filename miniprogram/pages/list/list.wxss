@@ -6,7 +6,7 @@
 }
 
 .linear-color {
-  background-image: linear-gradient(to top, #a8edea 0%, #fed6e3 100%);
+  background-image: linear-gradient(to top, #a8edea 0%, #fed6e3 100%);  
 }
 
 .approve-border {
@@ -19,4 +19,8 @@
   border-left-width: 10px;
   border-left-style: solid;
   border-left-color: #ee0a24;
+}
+
+.linear-color .van-nav-bar__left {
+  bottom: auto;
 }

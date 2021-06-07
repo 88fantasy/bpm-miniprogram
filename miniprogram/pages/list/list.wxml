@@ -2,14 +2,13 @@
 <van-nav-bar
   title="移动审批中心"
   custom-class="linear-color"
-  custom-style="height: 50px;"
   fixed
 >
-  <van-button wx:if="{{!batch}}" icon="cluster-o" slot="left" custom-style="background: transparent; border: 0px;" size="small" bind:click="toBatch" >批量同意</van-button>
-  <van-button wx:if="{{batch}}" icon="success" slot="left" custom-style="background: transparent; border: 0px;" size="small" bind:click="onBatchSubmit" >提交</van-button>
-  <van-button wx:if="{{batch}}" icon="cross" slot="left" custom-style="background: transparent; border: 0px;" size="small" bind:click="onBatchCancel" >取消</van-button>
+  <van-button wx:if="{{!batch}}" icon="cluster-o" slot="left" custom-style="background: transparent; border: 0px; " size="small" bind:click="toBatch" >批量同意</van-button>
+  <van-button wx:if="{{batch}}" icon="success" slot="left" custom-style="background: transparent; border: 0px; " size="small" bind:click="onBatchSubmit" >提交</van-button>
+  <van-button wx:if="{{batch}}" icon="cross" slot="left" custom-style="background: transparent; border: 0px; " size="small" bind:click="onBatchCancel" >取消</van-button>
 </van-nav-bar>
-<image src="/images/login.png" mode="aspectFill" style="height: {{statusBarHeight+40}}px; width:100%;" />
+<image src="/images/login.png" mode="aspectFill" style="height: {{statusBarHeight+46}}px; width:100%;" />
 <scroll-view scroll-y style="height: 100%; ">
   <van-cell-group border>
     <van-checkbox-group value="{{ checkedList }}" bind:change="onCheckChange">
