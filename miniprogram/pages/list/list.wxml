@@ -9,7 +9,8 @@
   <van-button wx:if="{{batch}}" icon="success" slot="left" custom-style="background: transparent; border: 0px;" size="small" bind:click="onBatchSubmit" >提交</van-button>
   <van-button wx:if="{{batch}}" icon="cross" slot="left" custom-style="background: transparent; border: 0px;" size="small" bind:click="onBatchCancel" >取消</van-button>
 </van-nav-bar>
-<scroll-view scroll-y style="height: 100%; margin-top: {{statusBarHeight+50}}px;">
+<image src="/images/login.png" mode="aspectFill" style="height: {{statusBarHeight+40}}px; width:100%;" />
+<scroll-view scroll-y style="height: 100%; ">
   <van-cell-group border>
     <van-checkbox-group value="{{ checkedList }}" bind:change="onCheckChange">
       <van-swipe-cell right-width="{{ item.approvable && !item.loading ? 65 : 0 }}" left-width="{{ item.stopable && !item.loading ? 65 : 0 }}" wx:for="{{assList}}" wx:key="index" >
